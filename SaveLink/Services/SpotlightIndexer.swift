@@ -8,13 +8,13 @@ import CoreSpotlight
 import UniformTypeIdentifiers
 
 /// Makes saved links searchable from the iPhone's Spotlight search.
-/// Links in PIN-protected folders and in Recently Deleted are never indexed.
+/// Links in Recently Deleted are never indexed.
 enum SpotlightIndexer {
     private static var pendingTask: Task<Void, Never>?
 
     static func reindex(_ links: [Link]) {
         let items = links
-            .filter { !$0.isTrashed && !$0.isLocked }
+            .filter { !$0.isTrashed }
             .map { link -> CSSearchableItem in
                 let attributes = CSSearchableItemAttributeSet(contentType: .url)
                 attributes.title = link.name

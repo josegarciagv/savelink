@@ -8,6 +8,7 @@
 import AppIntents
 import SwiftData
 import Foundation
+import UIKit
 
 // MARK: - Entities
 
@@ -31,13 +32,13 @@ struct LinkEntity: AppEntity {
 }
 
 struct LinkEntityQuery: EntityStringQuery {
-    /// Only links outside PIN-protected folders and Recently Deleted are exposed to the system.
+    /// Links in Recently Deleted are not exposed to the system.
     @MainActor
     private func visibleLinks() -> [Link] {
         let links = (try? AppModelContainer.shared.mainContext.fetch(
             FetchDescriptor<Link>(predicate: #Predicate { $0.deletedAt == nil }, sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         )) ?? []
-        return links.filter { !$0.isLocked }
+        return links
     }
 
     func entities(for identifiers: [UUID]) async throws -> [LinkEntity] {
@@ -113,18 +114,25 @@ struct SaveLinkIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        let message = try await save()
+        return .result(dialog: "\(message)")
+    }
+
+    /// Saves the link and returns the message to show.
+    @MainActor
+    func save() async throws -> String {
         let context = AppModelContainer.shared.mainContext
         let activeCount = (try? context.fetchCount(FetchDescriptor<Link>(predicate: #Predicate { $0.deletedAt == nil }))) ?? 0
         guard SubscriptionManager.shared.canAddMoreLinks(currentCount: activeCount) else {
-            return .result(dialog: "You've reached the free limit of 50 links. Open SaveLinks to upgrade.")
+            return String(localized: "You've reached the free limit of 50 links. Open SaveLinks to upgrade.")
         }
 
         let folders = (try? context.fetch(FetchDescriptor<Folder>())) ?? []
         let target: Folder
-        if let match = folders.first(where: { $0.id == folder?.id }) ?? folders.first(where: { !$0.isLocked }) {
+        if let match = folders.first(where: { $0.id == folder?.id }) ?? folders.first {
             target = match
         } else {
-            target = Folder(name: "Inbox", pin: "", color: Theme.defaultFolderColor, icon: "tray.fill")
+            target = Folder(name: "Inbox", color: Theme.defaultFolderColor, icon: "tray.fill")
             context.insert(target)
         }
 
@@ -140,8 +148,29 @@ struct SaveLinkIntent: AppIntent {
         target.links.append(link)
         target.updatedAt = Date()
         context.insert(link)
+        LinkRules.shared.apply(to: link, in: context, overrideFolder: folder == nil)
         context.saveAndBackup()
-        return .result(dialog: "Saved \"\(title)\" to \(target.name).")
+        return String(localized: "Saved \"\(title)\" to \(target.name).")
+    }
+}
+
+/// For the Action button and Shortcuts: saves the link that's in the clipboard.
+struct SaveClipboardIntent: AppIntent {
+    static let title: LocalizedStringResource = "Save Copied Link"
+    static let description = IntentDescription("Saves the link in the clipboard to SaveLinks.")
+
+    @MainActor
+    func perform() async throws -> some IntentResult & ProvidesDialog {
+        let pasteboard = UIPasteboard.general
+        let text = pasteboard.url?.absoluteString ?? pasteboard.string ?? ""
+        guard Link.isValidURL(text), let url = URL(string: Link.normalizedURLString(text)) else {
+            return .result(dialog: "There's no link in the clipboard.")
+        }
+        var intent = SaveLinkIntent()
+        intent.url = url
+        intent.readLater = false
+        let message = try await intent.save()
+        return .result(dialog: "\(message)")
     }
 }
 
@@ -169,7 +198,7 @@ struct ReadLaterCountIntent: AppIntent {
         let links = (try? AppModelContainer.shared.mainContext.fetch(
             FetchDescriptor<Link>(predicate: #Predicate { $0.deletedAt == nil && $0.isReadLater })
         )) ?? []
-        let count = links.filter { !$0.isLocked }.count
+        let count = links.count
         let dialog: IntentDialog = count == 0 ? "Your Read Later list is empty." : "You have \(count) links to read later."
         return .result(value: count, dialog: dialog)
     }
@@ -185,6 +214,15 @@ struct SaveLinkShortcuts: AppShortcutsProvider {
             ],
             shortTitle: "Save Link",
             systemImageName: "link.badge.plus"
+        )
+        AppShortcut(
+            intent: SaveClipboardIntent(),
+            phrases: [
+                "Save copied link in \(.applicationName)",
+                "Save clipboard to \(.applicationName)"
+            ],
+            shortTitle: "Save Copied Link",
+            systemImageName: "doc.on.clipboard"
         )
         AppShortcut(
             intent: OpenLinkIntent(),

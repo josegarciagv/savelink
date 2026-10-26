@@ -19,7 +19,6 @@ struct FolderFormView: View {
     var onDelete: (() -> Void)? = nil
 
     @State private var folderName: String
-    @State private var pin: String
     @State private var selectedColor: String
     @State private var selectedIcon: String
 
@@ -27,7 +26,6 @@ struct FolderFormView: View {
         self.folder = folder
         self.onDelete = onDelete
         _folderName = State(initialValue: folder?.name ?? "")
-        _pin = State(initialValue: folder?.pin ?? "")
         _selectedColor = State(initialValue: folder?.color ?? Theme.defaultFolderColor)
         _selectedIcon = State(initialValue: folder?.icon ?? Theme.defaultFolderIcon)
     }
@@ -35,7 +33,6 @@ struct FolderFormView: View {
     private var isEditing: Bool { folder != nil }
     private var tint: Color { .folder(subscriptionManager.canUseColors ? selectedColor : Theme.defaultFolderColor) }
     private var trimmedName: String { folderName.trimmingCharacters(in: .whitespacesAndNewlines) }
-    private var pinIsValid: Bool { pin.isEmpty || pin.count == 4 }
 
     var body: some View {
         NavigationStack {
@@ -110,34 +107,13 @@ struct FolderFormView: View {
                     }
                 }
 
-                Section {
-                    if subscriptionManager.canUsePIN {
-                        SecureField("4-digit PIN (optional)", text: $pin)
-                            .keyboardType(.numberPad)
-                            .onChange(of: pin) { _, newValue in
-                                let digits = String(newValue.filter(\.isNumber).prefix(4))
-                                if digits != newValue { pin = digits }
-                            }
-                    } else {
-                        premiumRow(title: "PIN Protection", icon: "lock.fill")
-                    }
-                } header: {
-                    Text("Security")
-                } footer: {
-                    if subscriptionManager.canUsePIN {
-                        Text(pinIsValid ? "Protected folders ask for the PIN (or Face ID) before opening and stay out of search and favorites." : "The PIN must have exactly 4 digits.")
-                            .foregroundStyle(pinIsValid ? Color.secondary : Color.red)
-                    } else {
-                        Text("Upgrade to Premium to use PIN protection")
-                    }
-                }
-
                 if isEditing {
                     Section {
                         Button(role: .destructive) {
                             showDeleteConfirmation = true
                         } label: {
                             Label("Delete Folder", systemImage: "trash")
+                                .foregroundStyle(.red)
                         }
                     }
                 }
@@ -151,7 +127,7 @@ struct FolderFormView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(isEditing ? "Save" : "Create") { save() }
                         .fontWeight(.semibold)
-                        .disabled(trimmedName.isEmpty || !pinIsValid)
+                        .disabled(trimmedName.isEmpty)
                 }
             }
             .tint(tint)
@@ -161,25 +137,9 @@ struct FolderFormView: View {
             .sheet(isPresented: $showSubscriptionView) {
                 SubscriptionView()
             }
-            .sheet(isPresented: $showDeleteConfirmation) {
-                if let folder {
-                    DeleteFolderConfirmationView(
-                        folderName: folder.name,
-                        folderCount: 1,
-                        onConfirm: {
-                            modelContext.delete(folder)
-                            modelContext.saveAndBackup()
-                            showDeleteConfirmation = false
-                            dismiss()
-                            onDelete?()
-                        },
-                        onCancel: {
-                            showDeleteConfirmation = false
-                        }
-                    )
-                    .presentationDetents([.height(320)])
-                    .presentationDragIndicator(.visible)
-                }
+            .deleteFolderAlert(isPresented: $showDeleteConfirmation, folder: folder) {
+                dismiss()
+                onDelete?()
             }
         }
     }
@@ -203,7 +163,7 @@ struct FolderFormView: View {
         .animation(.snappy, value: selectedColor)
     }
 
-    private func premiumRow(title: String, icon: String) -> some View {
+    private func premiumRow(title: LocalizedStringKey, icon: String) -> some View {
         Button {
             showSubscriptionView = true
         } label: {
@@ -223,16 +183,14 @@ struct FolderFormView: View {
 
     private func save() {
         let color = subscriptionManager.canUseColors ? selectedColor : Theme.defaultFolderColor
-        let folderPin = subscriptionManager.canUsePIN ? pin : ""
 
         if let folder {
             folder.name = trimmedName
-            folder.pin = folderPin
             folder.color = color
             folder.icon = selectedIcon
             folder.updatedAt = Date()
         } else {
-            modelContext.insert(Folder(name: trimmedName, pin: folderPin, color: color, icon: selectedIcon))
+            modelContext.insert(Folder(name: trimmedName, color: color, icon: selectedIcon))
         }
         modelContext.saveAndBackup()
         Haptics.success()

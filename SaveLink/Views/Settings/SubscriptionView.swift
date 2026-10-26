@@ -17,6 +17,7 @@ struct SubscriptionView: View {
     @State private var isPurchasing = false
     @State private var isRestoring = false
     @State private var restoreMessage: String?
+    @State private var pendingMessage = false
     @State private var showManageSubscriptions = false
     @State private var trialEligible = false
 
@@ -98,6 +99,11 @@ struct SubscriptionView: View {
             } message: {
                 Text(restoreMessage ?? "")
             }
+            .alert("Purchase Pending", isPresented: $pendingMessage) {
+                Button("OK", role: .cancel) { dismiss() }
+            } message: {
+                Text("Your purchase needs approval. PRO unlocks automatically as soon as it's approved.")
+            }
             .manageSubscriptionsSheet(isPresented: $showManageSubscriptions)
         }
         .tint(Theme.brand)
@@ -132,8 +138,7 @@ struct SubscriptionView: View {
         VStack(alignment: .leading, spacing: 16) {
             PaywallFeature(icon: "infinity", color: .blue, title: "Unlimited links", subtitle: "Free plan is limited to 50")
             PaywallFeature(icon: "sparkles", color: .pink, title: "AI summaries & tags", subtitle: "Private, on-device Apple Intelligence")
-            PaywallFeature(icon: "lock.fill", color: .green, title: "PIN-protected folders", subtitle: "Keep private links private")
-            PaywallFeature(icon: "faceid", color: .teal, title: "Face ID & Touch ID", subtitle: "Unlock folders instantly")
+            PaywallFeature(icon: "app.badge.fill", color: .teal, title: "Alternate app icons", subtitle: "Sunset, Mint and Graphite")
             PaywallFeature(icon: "qrcode.viewfinder", color: .purple, title: "QR code scanner", subtitle: "Save links from any QR code")
             PaywallFeature(icon: "paintpalette.fill", color: .orange, title: "Custom folder colors", subtitle: "12 colors to organize your way")
         }
@@ -261,11 +266,15 @@ struct SubscriptionView: View {
     // MARK: - Helpers
 
     private func priceCaption(for product: Product) -> String {
-        let period = product.id.contains("year") ? "year" : "month"
+        let yearly = product.id.contains("year")
         if trialEligible, let offer = product.subscription?.introductoryOffer {
-            return "\(offer.period.displayText) free, then \(product.displayPrice)/\(period). Cancel anytime."
+            return yearly
+                ? String(localized: "\(offer.period.displayText) free, then \(product.displayPrice)/year. Cancel anytime.")
+                : String(localized: "\(offer.period.displayText) free, then \(product.displayPrice)/month. Cancel anytime.")
         }
-        return "\(product.displayPrice)/\(period). Cancel anytime."
+        return yearly
+            ? String(localized: "\(product.displayPrice)/year. Cancel anytime.")
+            : String(localized: "\(product.displayPrice)/month. Cancel anytime.")
     }
 
     private func updateTrialEligibility() async {
@@ -282,10 +291,14 @@ struct SubscriptionView: View {
         defer { isPurchasing = false }
 
         do {
-            let success = try await subscriptionManager.purchase(product)
-            if success {
+            switch try await subscriptionManager.purchase(product) {
+            case .purchased:
                 Haptics.success()
                 dismiss()
+            case .pending:
+                pendingMessage = true
+            case .cancelled:
+                break
             }
         } catch {
             purchaseError = error.localizedDescription
@@ -296,33 +309,40 @@ struct SubscriptionView: View {
     private func restore() async {
         isRestoring = true
         defer { isRestoring = false }
-        await subscriptionManager.restorePurchases()
-        restoreMessage = isSubscribed
-            ? "Your PRO subscription has been restored."
-            : "No active subscription was found for this Apple Account."
+        switch await subscriptionManager.restorePurchases() {
+        case .restored:
+            restoreMessage = String(localized: "Your PRO subscription has been restored.")
+        case .nothingToRestore:
+            restoreMessage = String(localized: "No active subscription was found for this Apple Account.")
+        case .failed:
+            restoreMessage = String(localized: "Couldn't connect to the App Store. Check your connection and try again.")
+        }
     }
 }
 
 private extension Product.SubscriptionPeriod {
+    /// "1 week", "3 days"… in the user's language.
     var displayText: String {
-        let unitName: String
+        var components = DateComponents()
         switch unit {
-        case .day: unitName = value == 7 ? "week" : "day"
-        case .week: unitName = "week"
-        case .month: unitName = "month"
-        case .year: unitName = "year"
-        @unknown default: unitName = "period"
+        case .day where value == 7: components.weekOfMonth = 1
+        case .day: components.day = value
+        case .week: components.weekOfMonth = value
+        case .month: components.month = value
+        case .year: components.year = value
+        @unknown default: components.day = value
         }
-        if unit == .day && value == 7 { return "1 week" }
-        return value == 1 ? "1 \(unitName)" : "\(value) \(unitName)s"
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        return formatter.string(from: components) ?? ""
     }
 }
 
 struct PaywallFeature: View {
     let icon: String
     let color: Color
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
 
     var body: some View {
         HStack(spacing: 14) {

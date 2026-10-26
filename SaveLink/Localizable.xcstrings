@@ -1,0 +1,3448 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "·" : {
+      "shouldTranslate" : false
+    },
+    "\"%@\" will be moved to Recently Deleted. You can restore it for 30 days." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" se moverá a Eliminados recientemente. Puedes restaurarlo durante 30 días."
+          }
+        }
+      }
+    },
+    "“Hey Siri, save a link in SaveLinks”" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Oye Siri, guarda un enlace en SaveLinks”"
+          }
+        }
+      }
+    },
+    "“What do I have to read in SaveLinks”" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Qué tengo para leer en SaveLinks”"
+          }
+        }
+      }
+    },
+    "#%@" : {
+      "shouldTranslate" : false
+    },
+    "%@" : {
+      "shouldTranslate" : false
+    },
+    "%@ free, then %@/month. Cancel anytime." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ gratis, luego %@/mes. Cancela cuando quieras."
+          }
+        }
+      }
+    },
+    "%@ free, then %@/year. Cancel anytime." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ gratis, luego %@/año. Cancela cuando quieras."
+          }
+        }
+      }
+    },
+    "%@/month, billed yearly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mes, cobrado anualmente"
+          }
+        }
+      }
+    },
+    "%@/month. Cancel anytime." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/mes. Cancela cuando quieras."
+          }
+        }
+      }
+    },
+    "%@/year. Cancel anytime." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/año. Cancela cuando quieras."
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "shouldTranslate" : false
+    },
+    "%lld days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld días"
+          }
+        }
+      }
+    },
+    "%lld highlights%@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld resaltados%@"
+          }
+        }
+      }
+    },
+    "%lld links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld enlaces"
+          }
+        }
+      }
+    },
+    "%lld of %lld links look broken. Find them in Broken Links on the Home screen." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld de %lld enlaces parecen rotos. Encuéntralos en Enlaces rotos en Inicio."
+          }
+        }
+      }
+    },
+    "%lld were already saved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld ya estaban guardados."
+          }
+        }
+      }
+    },
+    "%lld were skipped because of the free 50-link limit. Upgrade to PRO to import them all." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se omitieron %lld por el límite gratis de 50 enlaces. Mejora a PRO para importarlos todos."
+          }
+        }
+      }
+    },
+    "%lld/%lld" : {
+      "shouldTranslate" : false
+    },
+    "%lld/50 links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/50 enlaces"
+          }
+        }
+      }
+    },
+    "%lld×" : {
+      "shouldTranslate" : false
+    },
+    "•" : {
+      "shouldTranslate" : false
+    },
+    "1 day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 día"
+          }
+        }
+      }
+    },
+    "1 link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 enlace"
+          }
+        }
+      }
+    },
+    "4-digit PIN (optional)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN de 4 dígitos (opcional)"
+          }
+        }
+      }
+    },
+    "12 colors to organize your way" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 colores para organizarte a tu manera"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        }
+      }
+    },
+    "Add a tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade una etiqueta"
+          }
+        }
+      }
+    },
+    "Add Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir enlace"
+          }
+        }
+      }
+    },
+    "Add Rule" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir regla"
+          }
+        }
+      }
+    },
+    "Add Tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir etiquetas"
+          }
+        }
+      }
+    },
+    "Add to Favorites" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir a Favoritos"
+          }
+        }
+      }
+    },
+    "Add to Read Later" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir a Leer después"
+          }
+        }
+      }
+    },
+    "Added" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadido"
+          }
+        }
+      }
+    },
+    "AI summaries & tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resúmenes y etiquetas con IA"
+          }
+        }
+      }
+    },
+    "All %lld links work." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los %lld enlaces funcionan."
+          }
+        }
+      }
+    },
+    "All Caught Up" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todo al día"
+          }
+        }
+      }
+    },
+    "All features unlocked. Thank you!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las funciones desbloqueadas. ¡Gracias!"
+          }
+        }
+      }
+    },
+    "Allow camera access in Settings to scan." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite el acceso a la cámara en Configuración para escanear."
+          }
+        }
+      }
+    },
+    "Allow notifications for SaveLinks to get reading reminders." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite las notificaciones de SaveLinks para recibir recordatorios de lectura."
+          }
+        }
+      }
+    },
+    "Already saved as \"%@\"%@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya guardado como \"%@\"%@"
+          }
+        }
+      }
+    },
+    "Alternate app icons" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Íconos alternativos"
+          }
+        }
+      }
+    },
+    "App Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de la app"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apariencia"
+          }
+        }
+      }
+    },
+    "Apple Intelligence is still downloading. Try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence aún se está descargando. Inténtalo más tarde."
+          }
+        }
+      }
+    },
+    "Apple Intelligence isn't available right now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence no está disponible en este momento."
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete \"%@\"? This will also delete all links inside it." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Seguro que quieres eliminar \"%@\"? También se eliminarán todos sus enlaces."
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete %lld folders? This will also delete all links inside them." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Seguro que quieres eliminar %lld carpetas? También se eliminarán todos sus enlaces."
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete %lld links?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Seguro que quieres eliminar %lld enlaces?"
+          }
+        }
+      }
+    },
+    "Automatic Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reglas automáticas"
+          }
+        }
+      }
+    },
+    "BEST VALUE" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MEJOR PRECIO"
+          }
+        }
+      }
+    },
+    "Billed monthly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cobro mensual"
+          }
+        }
+      }
+    },
+    "Broken" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotos"
+          }
+        }
+      }
+    },
+    "Broken Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces rotos"
+          }
+        }
+      }
+    },
+    "Camera access is off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso a la cámara está desactivado"
+          }
+        }
+      }
+    },
+    "Camera not available" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cámara no disponible"
+          }
+        }
+      }
+    },
+    "Can't create QR code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo crear el código QR"
+          }
+        }
+      }
+    },
+    "Can't Read This Page" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede leer esta página"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Change" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar"
+          }
+        }
+      }
+    },
+    "Check Again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar de nuevo"
+          }
+        }
+      }
+    },
+    "Check for Broken Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar enlaces rotos"
+          }
+        }
+      }
+    },
+    "Choose a photo or screenshot that shows a QR code clearly." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una foto o captura donde se vea bien un código QR."
+          }
+        }
+      }
+    },
+    "Choose Require Face ID" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige Requerir Face ID"
+          }
+        }
+      }
+    },
+    "Choose SaveLinks in the app row (tap More if you don't see it)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige SaveLinks en la fila de apps (toca Más si no aparece)"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "Color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
+    },
+    "Contact Support" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactar soporte"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        }
+      }
+    },
+    "Copied" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        }
+      }
+    },
+    "Copy URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar URL"
+          }
+        }
+      }
+    },
+    "Couldn't connect to the App Store. Check your connection and try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo conectar con la App Store. Revisa tu conexión e inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "Create" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear"
+          }
+        }
+      }
+    },
+    "Create a Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear una carpeta"
+          }
+        }
+      }
+    },
+    "Created privately on your device with Apple Intelligence." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creado de forma privada en tu dispositivo con Apple Intelligence."
+          }
+        }
+      }
+    },
+    "Custom Colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colores personalizados"
+          }
+        }
+      }
+    },
+    "Custom folder colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colores de carpeta personalizados"
+          }
+        }
+      }
+    },
+    "Custom Reminder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordatorio personalizado"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Delete “%@”?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar “%@”?"
+          }
+        }
+      }
+    },
+    "Delete Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar carpeta"
+          }
+        }
+      }
+    },
+    "Delete Forever" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar para siempre"
+          }
+        }
+      }
+    },
+    "Delete Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar enlace"
+          }
+        }
+      }
+    },
+    "Deleted" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminados"
+          }
+        }
+      }
+    },
+    "Deleted links stay here for 30 days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los enlaces eliminados se quedan aquí 30 días."
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción"
+          }
+        }
+      }
+    },
+    "Description (optional)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción (opcional)"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles"
+          }
+        }
+      }
+    },
+    "Developer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desarrollador"
+          }
+        }
+      }
+    },
+    "Don't change" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cambiar"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        }
+      }
+    },
+    "Double-tap or long-press a paragraph to highlight it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca dos veces o mantén presionado un párrafo para resaltarlo."
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        }
+      }
+    },
+    "Edit Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar carpeta"
+          }
+        }
+      }
+    },
+    "Edit Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar enlace"
+          }
+        }
+      }
+    },
+    "Empty" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaciar"
+          }
+        }
+      }
+    },
+    "Enter PIN to open this folder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa el PIN para abrir esta carpeta"
+          }
+        }
+      }
+    },
+    "Every feature is unlocked. Thanks for supporting SaveLinks!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las funciones están desbloqueadas. ¡Gracias por apoyar SaveLinks!"
+          }
+        }
+      }
+    },
+    "Every link you checked still works." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los enlaces revisados siguen funcionando."
+          }
+        }
+      }
+    },
+    "Export Bookmarks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar marcadores"
+          }
+        }
+      }
+    },
+    "Fast" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rápido"
+          }
+        }
+      }
+    },
+    "Favorite" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorito"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
+          }
+        }
+      }
+    },
+    "Favorites Only" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo favoritos"
+          }
+        }
+      }
+    },
+    "Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpeta"
+          }
+        }
+      }
+    },
+    "Folder name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la carpeta"
+          }
+        }
+      }
+    },
+    "Folders" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpetas"
+          }
+        }
+      }
+    },
+    "Found by meaning, privately on your device. Try “recipes from last week”." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontrado por significado, de forma privada en tu dispositivo. Prueba “recetas de la semana pasada”."
+          }
+        }
+      }
+    },
+    "Free plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan gratis"
+          }
+        }
+      }
+    },
+    "Free plan is limited to 50" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El plan gratis tiene un límite de 50"
+          }
+        }
+      }
+    },
+    "From %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De %@"
+          }
+        }
+      }
+    },
+    "From Photos" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desde Fotos"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "Get a short summary and suggested tags, created privately on your device with Apple Intelligence." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén un resumen corto y etiquetas sugeridas, creados de forma privada en tu dispositivo con Apple Intelligence."
+          }
+        }
+      }
+    },
+    "Go to your Home Screen" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ve a tu pantalla de inicio"
+          }
+        }
+      }
+    },
+    "Graphite" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grafito"
+          }
+        }
+      }
+    },
+    "Group links in colorful folders with icons." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrupa enlaces en carpetas de colores con íconos."
+          }
+        }
+      }
+    },
+    "Highlight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resaltar"
+          }
+        }
+      }
+    },
+    "Home" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicio"
+          }
+        }
+      }
+    },
+    "https://example.com" : {
+      "shouldTranslate" : false
+    },
+    "Icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono"
+          }
+        }
+      }
+    },
+    "Import Bookmarks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar marcadores"
+          }
+        }
+      }
+    },
+    "Import or export bookmarks from Safari, Chrome, Firefox or Pocket (HTML file)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa o exporta marcadores de Safari, Chrome, Firefox o Pocket (archivo HTML)."
+          }
+        }
+      }
+    },
+    "Import or export bookmarks from Safari, Chrome, Firefox or Pocket (HTML file). Links in PIN-protected folders are never exported or checked." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa o exporta marcadores de Safari, Chrome, Firefox o Pocket (archivo HTML). Los enlaces de carpetas con PIN nunca se exportan ni se revisan."
+          }
+        }
+      }
+    },
+    "Imported %lld links into %lld new folders." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se importaron %lld enlaces en %lld carpetas nuevas."
+          }
+        }
+      }
+    },
+    "In 1 Hour" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En 1 hora"
+          }
+        }
+      }
+    },
+    "Incorrect PIN, try again" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN incorrecto, inténtalo de nuevo"
+          }
+        }
+      }
+    },
+    "iOS can lock or hide SaveLinks with Face ID, so nobody else can open it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS puede bloquear u ocultar SaveLinks con Face ID para que nadie más pueda abrirla."
+          }
+        }
+      }
+    },
+    "iOS protects SaveLinks for you. It works even when you're not using the app." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS protege SaveLinks por ti. Funciona incluso cuando no usas la app."
+          }
+        }
+      }
+    },
+    "Its %lld links will be deleted too. This can't be undone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También se eliminarán sus %lld enlaces. Esto no se puede deshacer."
+          }
+        }
+      }
+    },
+    "Its link will be deleted too. This can't be undone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También se eliminará su enlace. Esto no se puede deshacer."
+          }
+        }
+      }
+    },
+    "Keep all your favorite links organized in folders." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén todos tus enlaces favoritos organizados en carpetas."
+          }
+        }
+      }
+    },
+    "Keep the links you use most one tap away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten a un toque los enlaces que más usas."
+          }
+        }
+      }
+    },
+    "Larger Text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto más grande"
+          }
+        }
+      }
+    },
+    "Last opened" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última vez"
+          }
+        }
+      }
+    },
+    "Last Updated" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última actualización"
+          }
+        }
+      }
+    },
+    "Legal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legal"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        }
+      }
+    },
+    "Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace"
+          }
+        }
+      }
+    },
+    "Link Check Complete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisión terminada"
+          }
+        }
+      }
+    },
+    "Link ID" : {
+      "shouldTranslate" : false
+    },
+    "Link in clipboard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace en el portapapeles"
+          }
+        }
+      }
+    },
+    "Link Limit Reached" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Límite de enlaces alcanzado"
+          }
+        }
+      }
+    },
+    "Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces"
+          }
+        }
+      }
+    },
+    "Links leave this list when you open them or swipe right." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los enlaces salen de esta lista cuando los abres o deslizas a la derecha."
+          }
+        }
+      }
+    },
+    "Links saved in each of the last 8 weeks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces guardados en cada una de las últimas 8 semanas"
+          }
+        }
+      }
+    },
+    "Lock with Face ID" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquear con Face ID"
+          }
+        }
+      }
+    },
+    "Manage Subscription" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrar suscripción"
+          }
+        }
+      }
+    },
+    "Mark as Read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar como leído"
+          }
+        }
+      }
+    },
+    "Mint" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menta"
+          }
+        }
+      }
+    },
+    "Monthly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensual"
+          }
+        }
+      }
+    },
+    "Most Opened" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más abiertos"
+          }
+        }
+      }
+    },
+    "Move" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover"
+          }
+        }
+      }
+    },
+    "Move %lld Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover %lld enlaces"
+          }
+        }
+      }
+    },
+    "Move to Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover a carpeta"
+          }
+        }
+      }
+    },
+    "Move to Recently Deleted" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover a Eliminados recientemente"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Name (A–Z)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (A–Z)"
+          }
+        }
+      }
+    },
+    "Never" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nunca"
+          }
+        }
+      }
+    },
+    "New Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva carpeta"
+          }
+        }
+      }
+    },
+    "New Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo enlace"
+          }
+        }
+      }
+    },
+    "New to Old" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más nuevos primero"
+          }
+        }
+      }
+    },
+    "No active subscription was found for this Apple Account." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró una suscripción activa para esta cuenta de Apple."
+          }
+        }
+      }
+    },
+    "No Broken Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay enlaces rotos"
+          }
+        }
+      }
+    },
+    "No Favorites" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin favoritos"
+          }
+        }
+      }
+    },
+    "No Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin enlaces"
+          }
+        }
+      }
+    },
+    "No links use this tag yet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ningún enlace usa esta etiqueta todavía."
+          }
+        }
+      }
+    },
+    "No links were found in this file. Export your bookmarks as HTML and try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron enlaces en este archivo. Exporta tus marcadores como HTML e inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "No links yet" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay enlaces"
+          }
+        }
+      }
+    },
+    "No QR Code Found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró un código QR"
+          }
+        }
+      }
+    },
+    "No Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin reglas"
+          }
+        }
+      }
+    },
+    "Not a link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No es un enlace"
+          }
+        }
+      }
+    },
+    "Notes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas"
+          }
+        }
+      }
+    },
+    "Notifications Are Off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las notificaciones están desactivadas"
+          }
+        }
+      }
+    },
+    "Ocean" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Océano"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Old to New" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más antiguos primero"
+          }
+        }
+      }
+    },
+    "Only in Debug builds from Xcode. Unlocks every PRO feature without a purchase. This section doesn't exist in the App Store version." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo en compilaciones Debug de Xcode. Desbloquea todo PRO sin comprar. Esta sección no existe en la versión de la App Store."
+          }
+        }
+      }
+    },
+    "Open" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir"
+          }
+        }
+      }
+    },
+    "Open Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir enlace"
+          }
+        }
+      }
+    },
+    "Open Links in App" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir enlaces en la app"
+          }
+        }
+      }
+    },
+    "Open Saved Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir enlace guardado"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Configuración"
+          }
+        }
+      }
+    },
+    "Opened" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abierto"
+          }
+        }
+      }
+    },
+    "Opens" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperturas"
+          }
+        }
+      }
+    },
+    "Opens a link saved in SaveLinks." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre un enlace guardado en SaveLinks."
+          }
+        }
+      }
+    },
+    "Organize" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organiza"
+          }
+        }
+      }
+    },
+    "Permanently delete %lld links?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar %lld enlaces para siempre?"
+          }
+        }
+      }
+    },
+    "Pick a folder and tap Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una carpeta y toca Guardar"
+          }
+        }
+      }
+    },
+    "Pick Date & Time…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir fecha y hora…"
+          }
+        }
+      }
+    },
+    "Pin to Top" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fijar arriba"
+          }
+        }
+      }
+    },
+    "Plans couldn't be loaded." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los planes."
+          }
+        }
+      }
+    },
+    "Point your camera at a QR code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apunta la cámara a un código QR"
+          }
+        }
+      }
+    },
+    "Preview" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacidad"
+          }
+        }
+      }
+    },
+    "Privacy Policy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de privacidad"
+          }
+        }
+      }
+    },
+    "Private, on-device Apple Intelligence" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence privada, en tu dispositivo"
+          }
+        }
+      }
+    },
+    "PRO" : {
+      "shouldTranslate" : false
+    },
+    "Protected folders ask for the PIN (or Face ID) before opening and stay out of search and favorites." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las carpetas protegidas piden el PIN (o Face ID) para abrirse y no aparecen en la búsqueda ni en favoritos."
+          }
+        }
+      }
+    },
+    "Protected link" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace protegido"
+          }
+        }
+      }
+    },
+    "Purchase Error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error en la compra"
+          }
+        }
+      }
+    },
+    "Purchase Pending" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compra pendiente"
+          }
+        }
+      }
+    },
+    "QR Code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código QR"
+          }
+        }
+      }
+    },
+    "QR code scanner" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escáner de códigos QR"
+          }
+        }
+      }
+    },
+    "QR code scanner is a Premium feature." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El escáner de QR es una función Premium."
+          }
+        }
+      }
+    },
+    "Rate SaveLinks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calificar SaveLinks"
+          }
+        }
+      }
+    },
+    "Read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leído"
+          }
+        }
+      }
+    },
+    "Read Later" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer después"
+          }
+        }
+      }
+    },
+    "Read Later Count" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantidad para leer después"
+          }
+        }
+      }
+    },
+    "Read Offline" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer sin conexión"
+          }
+        }
+      }
+    },
+    "Read without internet, highlight and take notes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lee sin internet, resalta y toma notas"
+          }
+        }
+      }
+    },
+    "Recently Added" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadidos recientemente"
+          }
+        }
+      }
+    },
+    "Recently Deleted" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminados recientemente"
+          }
+        }
+      }
+    },
+    "Recently Deleted Is Empty" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay eliminados recientes"
+          }
+        }
+      }
+    },
+    "Refresh Saved Page" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizar página guardada"
+          }
+        }
+      }
+    },
+    "Related" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relacionados"
+          }
+        }
+      }
+    },
+    "Remind me" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordarme"
+          }
+        }
+      }
+    },
+    "Remind Me" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordarme"
+          }
+        }
+      }
+    },
+    "Reminder %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordatorio %@"
+          }
+        }
+      }
+    },
+    "Remove from Favorites" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar de Favoritos"
+          }
+        }
+      }
+    },
+    "Remove Highlight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar resaltado"
+          }
+        }
+      }
+    },
+    "Remove Offline Copy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar copia sin conexión"
+          }
+        }
+      }
+    },
+    "Remove Reminder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar recordatorio"
+          }
+        }
+      }
+    },
+    "Restore" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar"
+          }
+        }
+      }
+    },
+    "Restore Purchases" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar compras"
+          }
+        }
+      }
+    },
+    "Rule" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regla"
+          }
+        }
+      }
+    },
+    "Rules" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reglas"
+          }
+        }
+      }
+    },
+    "Rules run when you save a link from the app, Safari, Siri or an import. The first matching rule wins." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las reglas se aplican al guardar desde la app, Safari, Siri o una importación. Gana la primera regla que coincida."
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
+    "SAVE %lld%%" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AHORRA %lld%%"
+          }
+        }
+      }
+    },
+    "Save ${url} to ${folder}" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar ${url} en ${folder}"
+          }
+        }
+      }
+    },
+    "Save a Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar un enlace"
+          }
+        }
+      }
+    },
+    "Save Copied Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar enlace copiado"
+          }
+        }
+      }
+    },
+    "Save copied links and auto-fill their titles." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda enlaces copiados y completa sus títulos solo."
+          }
+        }
+      }
+    },
+    "Save for Offline Reading" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar para leer sin conexión"
+          }
+        }
+      }
+    },
+    "Save from Safari" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar desde Safari"
+          }
+        }
+      }
+    },
+    "Save it with one tap" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guárdalo con un toque"
+          }
+        }
+      }
+    },
+    "Save Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar enlace"
+          }
+        }
+      }
+    },
+    "Save links for later and they'll wait for you here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda enlaces para después y te esperarán aquí."
+          }
+        }
+      }
+    },
+    "Save links from any QR code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda enlaces de cualquier código QR"
+          }
+        }
+      }
+    },
+    "Save links from Safari or any app in two taps." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda enlaces desde Safari o cualquier app en dos toques."
+          }
+        }
+      }
+    },
+    "Save Page" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar página"
+          }
+        }
+      }
+    },
+    "Save pages to read offline, with reminders." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda páginas para leer sin conexión, con recordatorios."
+          }
+        }
+      }
+    },
+    "Save the text of this page to read it anywhere, even without internet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda el texto de esta página para leerla donde sea, incluso sin internet."
+          }
+        }
+      }
+    },
+    "Save your first link to this folder." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda tu primer enlace en esta carpeta."
+          }
+        }
+      }
+    },
+    "Saved" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardado"
+          }
+        }
+      }
+    },
+    "Saved \"%@\" to %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se guardó \"%@\" en %@."
+          }
+        }
+      }
+    },
+    "Saved %@ · %lld min read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardado %@ · %lld min de lectura"
+          }
+        }
+      }
+    },
+    "Saved per Week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardados por semana"
+          }
+        }
+      }
+    },
+    "SaveLink" : {
+      "shouldTranslate" : false
+    },
+    "SaveLinks %@" : {
+      "shouldTranslate" : false
+    },
+    "SaveLinks PRO" : {
+      "shouldTranslate" : false
+    },
+    "Saves a web link to SaveLinks." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda un enlace web en SaveLinks."
+          }
+        }
+      }
+    },
+    "Saves the link in the clipboard to SaveLinks." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda en SaveLinks el enlace del portapapeles."
+          }
+        }
+      }
+    },
+    "Saving page for offline reading…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardando la página para leer sin conexión…"
+          }
+        }
+      }
+    },
+    "Scan Again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escanear de nuevo"
+          }
+        }
+      }
+    },
+    "Scan QR" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escanear QR"
+          }
+        }
+      }
+    },
+    "Scan QR Code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escanear código QR"
+          }
+        }
+      }
+    },
+    "Search in %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en %@"
+          }
+        }
+      }
+    },
+    "Search links, tags and folders" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar enlaces, etiquetas y carpetas"
+          }
+        }
+      }
+    },
+    "Security" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguridad"
+          }
+        }
+      }
+    },
+    "See All" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todo"
+          }
+        }
+      }
+    },
+    "Select Links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionar enlaces"
+          }
+        }
+      }
+    },
+    "Serif Font" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuente con serifa"
+          }
+        }
+      }
+    },
+    "Set" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir"
+          }
+        }
+      }
+    },
+    "Share App" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir la app"
+          }
+        }
+      }
+    },
+    "Share Folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir carpeta"
+          }
+        }
+      }
+    },
+    "Share QR Code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir código QR"
+          }
+        }
+      }
+    },
+    "Share Quote" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir cita"
+          }
+        }
+      }
+    },
+    "Siri & Shortcuts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siri y Atajos"
+          }
+        }
+      }
+    },
+    "Smaller Text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto más pequeño"
+          }
+        }
+      }
+    },
+    "Sort" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordenar"
+          }
+        }
+      }
+    },
+    "Sort new links automatically. For example: links from youtube.com go to Videos with the #video tag." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordena los enlaces nuevos automáticamente. Por ejemplo: los de youtube.com van a Videos con la etiqueta #video."
+          }
+        }
+      }
+    },
+    "Start Free Trial" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar prueba gratis"
+          }
+        }
+      }
+    },
+    "Statistics" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estadísticas"
+          }
+        }
+      }
+    },
+    "Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Payment is charged to your Apple Account. Manage or cancel anytime in your App Store account settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del fin del período actual. El pago se cobra a tu cuenta de Apple. Adminístrala o cancélala cuando quieras en la configuración de tu cuenta de la App Store."
+          }
+        }
+      }
+    },
+    "Suggest Tags & Summary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerir etiquetas y resumen"
+          }
+        }
+      }
+    },
+    "Summarize" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumir"
+          }
+        }
+      }
+    },
+    "Summarize Again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumir de nuevo"
+          }
+        }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen"
+          }
+        }
+      }
+    },
+    "Sunset" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atardecer"
+          }
+        }
+      }
+    },
+    "Sunset, Mint and Graphite" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atardecer, Menta y Grafito"
+          }
+        }
+      }
+    },
+    "Support" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soporte"
+          }
+        }
+      }
+    },
+    "Swipe right to restore. Links are permanently deleted after 30 days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desliza a la derecha para restaurar. Los enlaces se eliminan para siempre tras 30 días."
+          }
+        }
+      }
+    },
+    "System" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema"
+          }
+        }
+      }
+    },
+    "Tag" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetar"
+          }
+        }
+      }
+    },
+    "Tags" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas"
+          }
+        }
+      }
+    },
+    "Tap the Share button" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca el botón Compartir"
+          }
+        }
+      }
+    },
+    "Tap the star on any link to add it here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca la estrella de cualquier enlace para añadirlo aquí."
+          }
+        }
+      }
+    },
+    "Tells you how many links are waiting in Read Later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te dice cuántos enlaces esperan en Leer después."
+          }
+        }
+      }
+    },
+    "Terms of Use" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Términos de uso"
+          }
+        }
+      }
+    },
+    "The file couldn't be read." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer el archivo."
+          }
+        }
+      }
+    },
+    "The page couldn't be read." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer la página."
+          }
+        }
+      }
+    },
+    "The page returned an error the last time it was checked." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La página dio un error la última vez que se revisó."
+          }
+        }
+      }
+    },
+    "The PIN must have exactly 4 digits." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El PIN debe tener exactamente 4 dígitos."
+          }
+        }
+      }
+    },
+    "Then" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entonces"
+          }
+        }
+      }
+    },
+    "There's no link in the clipboard." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún enlace en el portapapeles."
+          }
+        }
+      }
+    },
+    "These pages returned an error or their site no longer exists." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estas páginas dieron error o su sitio ya no existe."
+          }
+        }
+      }
+    },
+    "These tags are added to the %lld selected links." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estas etiquetas se añaden a los %lld enlaces seleccionados."
+          }
+        }
+      }
+    },
+    "This can't be undone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto no se puede deshacer."
+          }
+        }
+      }
+    },
+    "This device doesn't support Apple Intelligence." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este dispositivo no es compatible con Apple Intelligence."
+          }
+        }
+      }
+    },
+    "This doesn't look like a valid URL." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto no parece una URL válida."
+          }
+        }
+      }
+    },
+    "This folder is empty. This can't be undone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta carpeta está vacía. Esto no se puede deshacer."
+          }
+        }
+      }
+    },
+    "This link may be broken" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este enlace podría estar roto"
+          }
+        }
+      }
+    },
+    "This page doesn't have readable text, or you're offline." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta página no tiene texto legible o no tienes conexión."
+          }
+        }
+      }
+    },
+    "This QR code has text, not a web link." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este código QR tiene texto, no un enlace web."
+          }
+        }
+      }
+    },
+    "This Weekend" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este fin de semana"
+          }
+        }
+      }
+    },
+    "Time to read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora de leer"
+          }
+        }
+      }
+    },
+    "To Read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por leer"
+          }
+        }
+      }
+    },
+    "Tomorrow (9 AM)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mañana (9 a. m.)"
+          }
+        }
+      }
+    },
+    "Tonight (8 PM)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta noche (8 p. m.)"
+          }
+        }
+      }
+    },
+    "Top Sites" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sitios más guardados"
+          }
+        }
+      }
+    },
+    "Touch and hold the SaveLinks icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén presionado el ícono de SaveLinks"
+          }
+        }
+      }
+    },
+    "Try Again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "Try PRO Free" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba PRO gratis"
+          }
+        }
+      }
+    },
+    "Turn Flashlight Off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar linterna"
+          }
+        }
+      }
+    },
+    "Turn Flashlight On" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encender linterna"
+          }
+        }
+      }
+    },
+    "Turn on Apple Intelligence in Settings to use AI summaries." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa Apple Intelligence en Configuración para usar resúmenes con IA."
+          }
+        }
+      }
+    },
+    "Unlimited links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces ilimitados"
+          }
+        }
+      }
+    },
+    "Unlimited links and every premium feature." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces ilimitados y todas las funciones premium."
+          }
+        }
+      }
+    },
+    "Unlimited links, AI summaries and more from %@/month" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces ilimitados, resúmenes con IA y más desde %@/mes"
+          }
+        }
+      }
+    },
+    "Unlimited links, AI summaries, QR scanner and colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces ilimitados, resúmenes con IA, escáner QR y colores"
+          }
+        }
+      }
+    },
+    "Unlimited links, AI summaries, QR scanner and more" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlaces ilimitados, resúmenes con IA, escáner QR y más"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No fijar"
+          }
+        }
+      }
+    },
+    "Upgrade" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorar"
+          }
+        }
+      }
+    },
+    "Upgrade to Premium to use custom folder colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejora a Premium para usar colores de carpeta"
+          }
+        }
+      }
+    },
+    "Upgrade to Premium to use PIN protection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejora a Premium para usar protección con PIN"
+          }
+        }
+      }
+    },
+    "Upgrade to PRO" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorar a PRO"
+          }
+        }
+      }
+    },
+    "URL" : {
+      "shouldTranslate" : false
+    },
+    "Use biometrics to open PIN-protected folders without typing the PIN." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa la biometría para abrir carpetas con PIN sin escribirlo."
+          }
+        }
+      }
+    },
+    "Use Link" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar enlace"
+          }
+        }
+      }
+    },
+    "Week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana"
+          }
+        }
+      }
+    },
+    "Welcome to SaveLink" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido a SaveLink"
+          }
+        }
+      }
+    },
+    "When the link contains" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando el enlace contiene"
+          }
+        }
+      }
+    },
+    "Will be saved to a new \"Inbox\" folder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se guardará en una carpeta nueva \"Inbox\""
+          }
+        }
+      }
+    },
+    "Yearly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anual"
+          }
+        }
+      }
+    },
+    "You can restore it from Recently Deleted for 30 days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes restaurarlo desde Eliminados recientemente durante 30 días."
+          }
+        }
+      }
+    },
+    "You can still scan a QR code from a photo." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún puedes escanear un código QR desde una foto."
+          }
+        }
+      }
+    },
+    "You have %lld links to read later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tienes %lld enlaces para leer después."
+          }
+        }
+      }
+    },
+    "You'll also find SaveLinks actions in the Shortcuts app, Spotlight and on the Home Screen as widgets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También encontrarás acciones de SaveLinks en la app Atajos, en Spotlight y como widgets en la pantalla de inicio."
+          }
+        }
+      }
+    },
+    "You're PRO" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eres PRO"
+          }
+        }
+      }
+    },
+    "You've reached the free limit of 50 links. Open SaveLinks to upgrade." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llegaste al límite gratis de 50 enlaces. Abre SaveLinks para mejorar."
+          }
+        }
+      }
+    },
+    "You've reached the free plan limit of 50 links. Upgrade to Premium for unlimited links." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llegaste al límite de 50 enlaces del plan gratis. Mejora a Premium para tener enlaces ilimitados."
+          }
+        }
+      }
+    },
+    "Your Data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus datos"
+          }
+        }
+      }
+    },
+    "Your PRO subscription has been restored." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se restauró tu suscripción PRO."
+          }
+        }
+      }
+    },
+    "Your purchase needs approval. PRO unlocks automatically as soon as it's approved." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu compra necesita aprobación. PRO se desbloquea automáticamente en cuanto se apruebe."
+          }
+        }
+      }
+    },
+    "Your Read Later list is empty." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu lista Leer después está vacía."
+          }
+        }
+      }
+    },
+    "Your subscription is active" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu suscripción está activa"
+          }
+        }
+      }
+    },
+    "youtube.com" : {
+      "shouldTranslate" : false
+    }
+  },
+  "version" : "1.0"
+}

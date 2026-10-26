@@ -8,13 +8,14 @@
 import Foundation
 import SwiftData
 
+// Every stored property has a default value: CloudKit (iCloud sync) requires it.
 @Model
 final class Link {
-    var id: UUID
-    var name: String
-    var url: String
+    var id: UUID = UUID()
+    var name: String = ""
+    var url: String = ""
     var linkDescription: String?
-    var createdAt: Date
+    var createdAt: Date = Date()
     var updatedAt: Date?
     var folder: Folder?
     var isFavorite: Bool = false
@@ -29,6 +30,12 @@ final class Link {
     var summary: String?
     var isBroken: Bool = false
     var lastCheckedAt: Date?
+    /// Readable text of the page, saved for offline reading.
+    @Attribute(.externalStorage) var readerText: String?
+    var readerSavedAt: Date?
+    /// Paragraphs the user highlighted in the reader.
+    var highlights: [String] = []
+    var notes: String?
 
     init(name: String, url: String, linkDescription: String? = nil) {
         self.id = UUID()
@@ -63,11 +70,6 @@ final class Link {
         }
     }
     
-    /// True when the link lives in a PIN-protected folder.
-    var isLocked: Bool {
-        !(folder?.pin.isEmpty ?? true)
-    }
-
     static func domain(for urlString: String) -> String {
         guard let host = URL(string: normalizedURLString(urlString))?.host() else { return urlString }
         return host.hasPrefix("www.") ? String(host.dropFirst(4)) : host

@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		A1B2C3D40000000000000001 /* SaveLinkShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000002 /* SaveLinkShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BE61B4162F0833010072D713 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE61B4152F0833010072D713 /* StoreKit.framework */; };
 		A1B2C3D40000000000000101 /* SaveLinkWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000102 /* SaveLinkWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A1B2C3D40000000000000201 /* SaveLinkSafari.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000202 /* SaveLinkSafari.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A1B2C3D40000000000000261 /* SaveLinkSafariWeb/_locales in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000260 /* SaveLinkSafariWeb/_locales */; };
+		A1B2C3D40000000000000263 /* SaveLinkSafariWeb/images in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000262 /* SaveLinkSafariWeb/images */; };
+		A1B2C3D40000000000000301 /* SaveLinkWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A1B2C3D40000000000000302 /* SaveLinkWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BE61B4162F0833010072D713 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE61B4152F0833010072D713 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +31,20 @@
 			remoteGlobalIDString = A1B2C3D40000000000000107;
 			remoteInfo = SaveLinkWidgets;
 		};
+		A1B2C3D40000000000000203 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE61B3E62F082A350072D713 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B2C3D40000000000000207;
+			remoteInfo = SaveLinkSafari;
+		};
+		A1B2C3D40000000000000303 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE61B3E62F082A350072D713 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B2C3D40000000000000307;
+			remoteInfo = SaveLinkWatch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,19 +54,35 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A1B2C3D40000000000000201 /* SaveLinkSafari.appex in Embed Foundation Extensions */,
 				A1B2C3D40000000000000001 /* SaveLinkShare.appex in Embed Foundation Extensions */,
 				A1B2C3D40000000000000101 /* SaveLinkWidgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B2C3D40000000000000250 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				A1B2C3D40000000000000301 /* SaveLinkWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A1B2C3D40000000000000002 /* SaveLinkShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SaveLinkShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D40000000000000102 /* SaveLinkWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SaveLinkWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D40000000000000202 /* SaveLinkSafari.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SaveLinkSafari.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D40000000000000260 /* SaveLinkSafariWeb/_locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SaveLinkSafariWeb/_locales; sourceTree = "<group>"; };
+		A1B2C3D40000000000000262 /* SaveLinkSafariWeb/images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SaveLinkSafariWeb/images; sourceTree = "<group>"; };
+		A1B2C3D40000000000000302 /* SaveLinkWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaveLinkWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE61B3EE2F082A350072D713 /* SaveLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaveLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE61B4152F0833010072D713 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		A1B2C3D40000000000000102 /* SaveLinkWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SaveLinkWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -66,6 +100,27 @@
 			);
 			target = A1B2C3D40000000000000107 /* SaveLinkWidgets */;
 		};
+		A1B2C3D40000000000000204 /* Exceptions for "SaveLinkSafari" folder in "SaveLinkSafari" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A1B2C3D40000000000000207 /* SaveLinkSafari */;
+		};
+		A1B2C3D40000000000000270 /* Exceptions for "Shared" folder in "SaveLinkSafari" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WidgetIntents.swift,
+			);
+			target = A1B2C3D40000000000000207 /* SaveLinkSafari */;
+		};
+		A1B2C3D40000000000000271 /* Exceptions for "Shared" folder in "SaveLinkWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WidgetIntents.swift,
+			);
+			target = A1B2C3D40000000000000307 /* SaveLinkWatch */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -79,12 +134,11 @@
 		};
 		A1B2C3D40000000000000007 /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A1B2C3D40000000000000271 /* Exceptions for "Shared" folder in "SaveLinkWatch" target */,
+				A1B2C3D40000000000000270 /* Exceptions for "Shared" folder in "SaveLinkSafari" target */,
+			);
 			path = Shared;
-			sourceTree = "<group>";
-		};
-		BE61B3F02F082A350072D713 /* SaveLink */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SaveLink;
 			sourceTree = "<group>";
 		};
 		A1B2C3D40000000000000105 /* SaveLinkWidgets */ = {
@@ -95,10 +149,49 @@
 			path = SaveLinkWidgets;
 			sourceTree = "<group>";
 		};
+		A1B2C3D40000000000000205 /* SaveLinkSafari */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A1B2C3D40000000000000204 /* Exceptions for "SaveLinkSafari" folder in "SaveLinkSafari" target */,
+			);
+			path = SaveLinkSafari;
+			sourceTree = "<group>";
+		};
+		A1B2C3D40000000000000305 /* SaveLinkWatch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SaveLinkWatch;
+			sourceTree = "<group>";
+		};
+		BE61B3F02F082A350072D713 /* SaveLink */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SaveLink;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A1B2C3D40000000000000011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40000000000000109 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40000000000000209 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40000000000000309 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -113,13 +206,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1B2C3D40000000000000109 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -130,6 +216,10 @@
 				A1B2C3D40000000000000007 /* Shared */,
 				A1B2C3D40000000000000006 /* SaveLinkShare */,
 				A1B2C3D40000000000000105 /* SaveLinkWidgets */,
+				A1B2C3D40000000000000205 /* SaveLinkSafari */,
+				A1B2C3D40000000000000305 /* SaveLinkWatch */,
+				A1B2C3D40000000000000260 /* SaveLinkSafariWeb/_locales */,
+				A1B2C3D40000000000000262 /* SaveLinkSafariWeb/images */,
 				BE61B4142F0833010072D713 /* Frameworks */,
 				BE61B3EF2F082A350072D713 /* Products */,
 			);
@@ -139,6 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				BE61B3EE2F082A350072D713 /* SaveLink.app */,
+				A1B2C3D40000000000000302 /* SaveLinkWatch.app */,
+				A1B2C3D40000000000000202 /* SaveLinkSafari.appex */,
 				A1B2C3D40000000000000002 /* SaveLinkShare.appex */,
 				A1B2C3D40000000000000102 /* SaveLinkWidgets.appex */,
 			);
@@ -179,32 +271,6 @@
 			productReference = A1B2C3D40000000000000002 /* SaveLinkShare.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		BE61B3ED2F082A350072D713 /* SaveLink */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BE61B3FB2F082A370072D713 /* Build configuration list for PBXNativeTarget "SaveLink" */;
-			buildPhases = (
-				BE61B3EA2F082A350072D713 /* Sources */,
-				BE61B3EB2F082A350072D713 /* Frameworks */,
-				BE61B3EC2F082A350072D713 /* Resources */,
-				A1B2C3D40000000000000004 /* Embed Foundation Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A1B2C3D40000000000000008 /* PBXTargetDependency */,
-				A1B2C3D40000000000000106 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				A1B2C3D40000000000000007 /* Shared */,
-				BE61B3F02F082A350072D713 /* SaveLink */,
-			);
-			name = SaveLink;
-			packageProductDependencies = (
-			);
-			productName = SaveLink;
-			productReference = BE61B3EE2F082A350072D713 /* SaveLink.app */;
-			productType = "com.apple.product-type.application";
-		};
 		A1B2C3D40000000000000107 /* SaveLinkWidgets */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1B2C3D40000000000000111 /* Build configuration list for PBXNativeTarget "SaveLinkWidgets" */;
@@ -218,8 +284,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A1B2C3D40000000000000105 /* SaveLinkWidgets */,
 				A1B2C3D40000000000000007 /* Shared */,
+				A1B2C3D40000000000000105 /* SaveLinkWidgets */,
 			);
 			name = SaveLinkWidgets;
 			packageProductDependencies = (
@@ -227,6 +293,81 @@
 			productName = SaveLinkWidgets;
 			productReference = A1B2C3D40000000000000102 /* SaveLinkWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		A1B2C3D40000000000000207 /* SaveLinkSafari */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D40000000000000211 /* Build configuration list for PBXNativeTarget "SaveLinkSafari" */;
+			buildPhases = (
+				A1B2C3D40000000000000208 /* Sources */,
+				A1B2C3D40000000000000209 /* Frameworks */,
+				A1B2C3D40000000000000210 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A1B2C3D40000000000000007 /* Shared */,
+				A1B2C3D40000000000000205 /* SaveLinkSafari */,
+			);
+			name = SaveLinkSafari;
+			packageProductDependencies = (
+			);
+			productName = SaveLinkSafari;
+			productReference = A1B2C3D40000000000000202 /* SaveLinkSafari.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A1B2C3D40000000000000307 /* SaveLinkWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D40000000000000311 /* Build configuration list for PBXNativeTarget "SaveLinkWatch" */;
+			buildPhases = (
+				A1B2C3D40000000000000308 /* Sources */,
+				A1B2C3D40000000000000309 /* Frameworks */,
+				A1B2C3D40000000000000310 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A1B2C3D40000000000000007 /* Shared */,
+				A1B2C3D40000000000000305 /* SaveLinkWatch */,
+			);
+			name = SaveLinkWatch;
+			packageProductDependencies = (
+			);
+			productName = SaveLinkWatch;
+			productReference = A1B2C3D40000000000000302 /* SaveLinkWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE61B3ED2F082A350072D713 /* SaveLink */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE61B3FB2F082A370072D713 /* Build configuration list for PBXNativeTarget "SaveLink" */;
+			buildPhases = (
+				BE61B3EA2F082A350072D713 /* Sources */,
+				BE61B3EB2F082A350072D713 /* Frameworks */,
+				BE61B3EC2F082A350072D713 /* Resources */,
+				A1B2C3D40000000000000004 /* Embed Foundation Extensions */,
+				A1B2C3D40000000000000250 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1B2C3D40000000000000306 /* PBXTargetDependency */,
+				A1B2C3D40000000000000206 /* PBXTargetDependency */,
+				A1B2C3D40000000000000008 /* PBXTargetDependency */,
+				A1B2C3D40000000000000106 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A1B2C3D40000000000000007 /* Shared */,
+				BE61B3F02F082A350072D713 /* SaveLink */,
+			);
+			name = SaveLink;
+			packageProductDependencies = (
+			);
+			productName = SaveLink;
+			productReference = BE61B3EE2F082A350072D713 /* SaveLink.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -244,6 +385,12 @@
 					A1B2C3D40000000000000107 = {
 						CreatedOnToolsVersion = 26.2;
 					};
+					A1B2C3D40000000000000207 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					A1B2C3D40000000000000307 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					BE61B3ED2F082A350072D713 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -254,6 +401,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
 				Base,
 			);
 			mainGroup = BE61B3E52F082A350072D713;
@@ -263,6 +411,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				A1B2C3D40000000000000307 /* SaveLinkWatch */,
+				A1B2C3D40000000000000207 /* SaveLinkSafari */,
 				BE61B3ED2F082A350072D713 /* SaveLink */,
 				A1B2C3D40000000000000009 /* SaveLinkShare */,
 				A1B2C3D40000000000000107 /* SaveLinkWidgets */,
@@ -278,14 +428,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BE61B3EC2F082A350072D713 /* Resources */ = {
+		A1B2C3D40000000000000110 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1B2C3D40000000000000110 /* Resources */ = {
+		A1B2C3D40000000000000210 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D40000000000000261 /* SaveLinkSafariWeb/_locales in Resources */,
+				A1B2C3D40000000000000263 /* SaveLinkSafariWeb/images in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40000000000000310 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE61B3EC2F082A350072D713 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -302,14 +468,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BE61B3EA2F082A350072D713 /* Sources */ = {
+		A1B2C3D40000000000000108 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1B2C3D40000000000000108 /* Sources */ = {
+		A1B2C3D40000000000000208 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40000000000000308 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE61B3EA2F082A350072D713 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -329,6 +509,16 @@
 			target = A1B2C3D40000000000000107 /* SaveLinkWidgets */;
 			targetProxy = A1B2C3D40000000000000103 /* PBXContainerItemProxy */;
 		};
+		A1B2C3D40000000000000206 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1B2C3D40000000000000207 /* SaveLinkSafari */;
+			targetProxy = A1B2C3D40000000000000203 /* PBXContainerItemProxy */;
+		};
+		A1B2C3D40000000000000306 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1B2C3D40000000000000307 /* SaveLinkWatch */;
+			targetProxy = A1B2C3D40000000000000303 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -337,7 +527,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = XBS6C44JUF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SaveLinkShare/Info.plist;
@@ -348,7 +538,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -369,7 +559,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = XBS6C44JUF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SaveLinkShare/Info.plist;
@@ -380,7 +570,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -393,6 +583,190 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B2C3D40000000000000112 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SaveLinkWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3D40000000000000113 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SaveLinkWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B2C3D40000000000000212 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkSafari.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SaveLinkSafari/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.safari;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3D40000000000000213 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkSafari.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SaveLinkSafari/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.safari;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B2C3D40000000000000312 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = gvwebsite.savelinks;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		A1B2C3D40000000000000313 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = XBS6C44JUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = gvwebsite.savelinks;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Release;
 		};
@@ -520,18 +894,20 @@
 		BE61B3FC2F082A370072D713 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-Sunset AppIcon-Mint AppIcon-Graphite";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Config/SaveLink.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = XBS6C44JUF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/SaveLink-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR Codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to Unlock your folders";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -542,13 +918,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -562,18 +938,20 @@
 		BE61B3FD2F082A370072D713 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-Sunset AppIcon-Mint AppIcon-Graphite";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Config/SaveLink.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = XBS6C44JUF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/SaveLink-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR Codes";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to Unlock your folders";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -584,76 +962,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		A1B2C3D40000000000000112 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkWidgets.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = XBS6C44JUF;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SaveLinkWidgets/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.widgets;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A1B2C3D40000000000000113 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Config/SaveLinkWidgets.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = XBS6C44JUF;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SaveLinkWidgets/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SaveLinks;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gvwebsite.savelinks.widgets;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -673,6 +991,33 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A1B2C3D40000000000000111 /* Build configuration list for PBXNativeTarget "SaveLinkWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D40000000000000112 /* Debug */,
+				A1B2C3D40000000000000113 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D40000000000000211 /* Build configuration list for PBXNativeTarget "SaveLinkSafari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D40000000000000212 /* Debug */,
+				A1B2C3D40000000000000213 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D40000000000000311 /* Build configuration list for PBXNativeTarget "SaveLinkWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D40000000000000312 /* Debug */,
+				A1B2C3D40000000000000313 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BE61B3E92F082A350072D713 /* Build configuration list for PBXProject "SaveLink" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -687,15 +1032,6 @@
 			buildConfigurations = (
 				BE61B3FC2F082A370072D713 /* Debug */,
 				BE61B3FD2F082A370072D713 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A1B2C3D40000000000000111 /* Build configuration list for PBXNativeTarget "SaveLinkWidgets" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A1B2C3D40000000000000112 /* Debug */,
-				A1B2C3D40000000000000113 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

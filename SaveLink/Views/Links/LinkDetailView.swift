@@ -14,6 +14,7 @@ struct LinkDetailView: View {
     @State private var showEditView = false
     @State private var showMoveView = false
     @State private var showQRCode = false
+    @State private var showReader = false
     @State private var copied = false
     @StateObject private var subscriptionManager = SubscriptionManager.shared
     @State private var showSubscriptionView = false
@@ -33,20 +34,10 @@ struct LinkDetailView: View {
                     brokenBanner
                 }
                 actions
+                readerCard
                 readLaterCard
                 aiCard
                 details
-
-                Button {
-                    LinkOpener.shared.open(link)
-                } label: {
-                    Label("Open Link", systemImage: "safari.fill")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(tint.gradient, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .foregroundStyle(.white)
-                }
             }
             .padding()
             // Keep a readable width on the iPhone Duo inner display and iPad.
@@ -79,9 +70,13 @@ struct LinkDetailView: View {
         .sheet(isPresented: $showMoveView) {
             MoveLinkView(link: link)
         }
+        .fullScreenCover(isPresented: $showReader) {
+            ReaderView(link: link)
+        }
         .sheet(isPresented: $showQRCode) {
             QRCodeSheet(link: link)
                 .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showSubscriptionView) {
             SubscriptionView()
@@ -153,8 +148,12 @@ struct LinkDetailView: View {
                     Haptics.tap()
                 }
             )) {
-                Label("Read Later", systemImage: "book.fill")
-                    .foregroundStyle(.primary)
+                Label {
+                    Text("Read Later")
+                } icon: {
+                    Image(systemName: "book.fill")
+                        .foregroundStyle(.orange)
+                }
             }
             .tint(.orange)
             .padding()
@@ -315,6 +314,19 @@ struct LinkDetailView: View {
                 }
                 .padding(.horizontal)
             }
+
+            // The main action sits right under the title, no scrolling needed.
+            Button {
+                LinkOpener.shared.open(link)
+            } label: {
+                Label("Open Link", systemImage: "safari.fill")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(tint.gradient, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .foregroundStyle(.white)
+            }
+            .padding(.top, 4)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
@@ -344,14 +356,14 @@ struct LinkDetailView: View {
         }
     }
 
-    private func actionButton(_ title: String, icon: String, action: @escaping () -> Void) -> some View {
+    private func actionButton(_ title: LocalizedStringKey, icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             actionLabel(title, icon: icon)
         }
         .buttonStyle(.plain)
     }
 
-    private func actionLabel(_ title: String, icon: String) -> some View {
+    private func actionLabel(_ title: LocalizedStringKey, icon: String) -> some View {
         VStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.system(size: 20, weight: .semibold))
@@ -364,6 +376,42 @@ struct LinkDetailView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
         .card()
+    }
+
+    /// Offline copy, highlights and notes.
+    private var readerCard: some View {
+        Button {
+            showReader = true
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: link.readerText == nil ? "arrow.down.doc.fill" : "doc.text.fill")
+                    .font(.title3)
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(tint.gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(link.readerText == nil ? "Save for Offline Reading" : "Read Offline")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Group {
+                        if link.readerText == nil {
+                            Text("Read without internet, highlight and take notes")
+                        } else {
+                            Text("\(link.highlights.count) highlights\(link.notes?.isEmpty == false ? " · Notes" : "")")
+                        }
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .card()
+        }
+        .buttonStyle(.plain)
     }
 
     private var details: some View {
@@ -395,14 +443,14 @@ struct LinkDetailView: View {
                 Divider().frame(height: 36)
                 stat("Opened", value: "\(link.visitCount)×")
                 Divider().frame(height: 36)
-                stat("Last opened", value: link.lastOpenedAt?.formatted(.relative(presentation: .named)) ?? "Never")
+                stat("Last opened", value: link.lastOpenedAt?.formatted(.relative(presentation: .named)) ?? String(localized: "Never"))
             }
             .padding(.vertical, 12)
         }
         .card()
     }
 
-    private func detailRow<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+    private func detailRow<Content: View>(_ title: LocalizedStringKey, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.caption.weight(.semibold))
@@ -415,7 +463,7 @@ struct LinkDetailView: View {
         .padding()
     }
 
-    private func stat(_ title: String, value: String) -> some View {
+    private func stat(_ title: LocalizedStringKey, value: String) -> some View {
         VStack(spacing: 4) {
             Text(value)
                 .font(.subheadline.weight(.semibold))
@@ -499,7 +547,7 @@ struct EditLinkView: View {
                                 .tag(Optional(folder.id))
                         }
                     } label: {
-                        Label("Folder", systemImage: "folder")
+                        Text("Folder")
                     }
                 }
 
@@ -508,6 +556,7 @@ struct EditLinkView: View {
                         showDeleteConfirmation = true
                     } label: {
                         Label("Delete Link", systemImage: "trash")
+                            .foregroundStyle(.red)
                     }
                 }
             }
@@ -528,24 +577,18 @@ struct EditLinkView: View {
                     .disabled(linkName.trimmingCharacters(in: .whitespaces).isEmpty || !Link.isValidURL(url))
                 }
             }
-            .sheet(isPresented: $showDeleteConfirmation) {
-                DeleteLinkConfirmationView(
-                    linkName: link.name,
-                    linkCount: 1,
-                    onConfirm: {
-                        link.moveToTrash()
-                        modelContext.saveAndBackup()
-                        showDeleteConfirmation = false
-                        dismiss()
-                        // Navigate back to the folder
-                        onDelete?()
-                    },
-                    onCancel: {
-                        showDeleteConfirmation = false
-                    }
-                )
-                .presentationDetents([.height(320)])
-                .presentationDragIndicator(.visible)
+            .confirmationDialog("Delete “\(link.name)”?", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+                Button("Move to Recently Deleted", role: .destructive) {
+                    link.moveToTrash()
+                    modelContext.saveAndBackup()
+                    Haptics.success()
+                    dismiss()
+                    // Navigate back to the folder
+                    onDelete?()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("You can restore it from Recently Deleted for 30 days.")
             }
         }
     }

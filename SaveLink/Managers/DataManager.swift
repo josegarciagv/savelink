@@ -26,7 +26,6 @@ class DataManager {
             [
                 "id": folder.id.uuidString,
                 "name": folder.name,
-                "pin": folder.pin,
                 "color": folder.color,
                 "icon": folder.icon,
                 "isPinned": folder.isPinned,
@@ -42,9 +41,8 @@ class DataManager {
             KeychainHelper.save(key: foldersStorageKey, value: jsonString, service: keychainService)
         }
         
-        // The local copy is an unencrypted plist: leave out PINs and protected folders.
-        let publicFolderData = folderData.filter { ($0["pin"] as? String ?? "").isEmpty }
-        UserDefaults.standard.set(publicFolderData, forKey: foldersStorageKey)
+        // Also save locally as backup
+        UserDefaults.standard.set(folderData, forKey: foldersStorageKey)
         UserDefaults.standard.synchronize()
     }
     
@@ -81,10 +79,8 @@ class DataManager {
             KeychainHelper.save(key: linksStorageKey, value: jsonString, service: keychainService)
         }
         
-        // The local copy is an unencrypted plist: leave out links from protected folders.
-        let lockedFolderIDs = Set(links.filter(\.isLocked).compactMap { $0.folder?.id.uuidString })
-        let publicLinkData = linkData.filter { !lockedFolderIDs.contains($0["folderId"] as? String ?? "") }
-        UserDefaults.standard.set(publicLinkData, forKey: linksStorageKey)
+        // Also save locally as backup
+        UserDefaults.standard.set(linkData, forKey: linksStorageKey)
         UserDefaults.standard.synchronize()
     }
     
@@ -116,13 +112,12 @@ class DataManager {
             guard let idString = data["id"] as? String,
                   let id = UUID(uuidString: idString),
                   let name = data["name"] as? String,
-                  let pin = data["pin"] as? String,
                   let color = data["color"] as? String,
                   let createdAtTimestamp = data["createdAt"] as? TimeInterval else {
                 continue
             }
             
-            let folder = Folder(name: name, pin: pin, color: color)
+            let folder = Folder(name: name, color: color)
             folder.id = id
             folder.createdAt = Date(timeIntervalSince1970: createdAtTimestamp)
             
@@ -244,27 +239,70 @@ extension ModelContext {
         let links = (try? fetch(FetchDescriptor<Link>(predicate: #Predicate { $0.deletedAt == nil }))) ?? []
         SharedStore.publish(
             folders: folders.map {
-                SharedStore.FolderSnapshot(id: $0.id, name: $0.name, icon: $0.icon, color: $0.color, isLocked: $0.isLocked)
+                SharedStore.FolderSnapshot(id: $0.id, name: $0.name, icon: $0.icon, color: $0.color)
             },
             linkCount: links.count
         )
+        SharedStore.publish(savedURLs: links.map(\.url))
         
-        let visible = links.filter { !$0.isLocked }
         func widgetLinks(_ links: [Link]) -> [SharedStore.WidgetLink] {
             links.prefix(8).map {
                 SharedStore.WidgetLink(id: $0.id, name: $0.name, domain: $0.domain, color: $0.folder?.color ?? Theme.defaultFolderColor)
             }
         }
-        let readLater = visible.filter(\.isReadLater).sorted { $0.createdAt > $1.createdAt }
+        let readLater = links.filter(\.isReadLater).sorted { $0.createdAt > $1.createdAt }
         SharedStore.publish(widget: SharedStore.WidgetSnapshot(
-            favorites: widgetLinks(visible.filter(\.isFavorite).sorted { $0.lastUpdatedDate > $1.lastUpdatedDate }),
+            favorites: widgetLinks(links.filter(\.isFavorite).sorted { $0.lastUpdatedDate > $1.lastUpdatedDate }),
             readLater: widgetLinks(readLater),
-            recent: widgetLinks(visible.sorted { $0.createdAt > $1.createdAt }),
+            recent: widgetLinks(links.sorted { $0.createdAt > $1.createdAt }),
             linkCount: links.count,
             readLaterCount: readLater.count
         ))
         WidgetCenter.shared.reloadAllTimelines()
+        WatchSync.shared.send(SharedStore.widgetSnapshot)
         SpotlightIndexer.reindex(links)
+    }
+    
+    /// Merges folders and links that share an id. They appear when a backup was restored on a
+    /// new device and iCloud then downloads the same items. Returns how many were removed.
+    @discardableResult
+    func removeDuplicates() -> Int {
+        var removed = 0
+        let folders = (try? fetch(FetchDescriptor<Folder>(sortBy: [SortDescriptor(\.createdAt)]))) ?? []
+        var keptFolders: [UUID: Folder] = [:]
+        for folder in folders {
+            if let kept = keptFolders[folder.id] {
+                for link in folder.links {
+                    link.folder = kept
+                    kept.links.append(link)
+                }
+                folder.storedLinks = []
+                delete(folder)
+                removed += 1
+            } else {
+                keptFolders[folder.id] = folder
+            }
+        }
+        
+        let links = (try? fetch(FetchDescriptor<Link>(sortBy: [SortDescriptor(\.createdAt)]))) ?? []
+        var keptLinks: [UUID: Link] = [:]
+        for link in links {
+            if let kept = keptLinks[link.id] {
+                // Keep the richer copy's details.
+                kept.isFavorite = kept.isFavorite || link.isFavorite
+                kept.visitCount = max(kept.visitCount, link.visitCount)
+                kept.tags = TagFormatter.merge(kept.tags, link.tags)
+                kept.summary = kept.summary ?? link.summary
+                delete(link)
+                removed += 1
+            } else {
+                keptLinks[link.id] = link
+            }
+        }
+        if removed > 0 {
+            saveAndBackup()
+        }
+        return removed
     }
     
     /// Permanently removes links that have been in Recently Deleted for more than 30 days.
@@ -277,6 +315,21 @@ extension ModelContext {
         saveAndBackup()
     }
     
+    /// Applies "mark as read" taps made on the Read Later widget.
+    func applyWidgetReadMarks() {
+        let ids = SharedStore.takeReadMarks()
+        guard !ids.isEmpty else { return }
+        let links = (try? fetch(FetchDescriptor<Link>(predicate: #Predicate { $0.isReadLater }))) ?? []
+        for link in links where ids.contains(link.id) {
+            link.isReadLater = false
+            if link.reminderDate != nil {
+                ReminderScheduler.cancel(for: link)
+                link.reminderDate = nil
+            }
+        }
+        saveAndBackup()
+    }
+    
     /// Imports links saved from the Share extension. Returns how many were added.
     @discardableResult
     func importPendingLinks() -> Int {
@@ -286,10 +339,10 @@ extension ModelContext {
         var folders = (try? fetch(FetchDescriptor<Folder>())) ?? []
         for item in pending {
             let folder: Folder
-            if let match = folders.first(where: { $0.id == item.folderID }) ?? folders.first(where: { !$0.isLocked }) {
+            if let match = folders.first(where: { $0.id == item.folderID }) ?? folders.first {
                 folder = match
             } else {
-                folder = Folder(name: "Inbox", pin: "", color: Theme.defaultFolderColor, icon: "tray.fill")
+                folder = Folder(name: "Inbox", color: Theme.defaultFolderColor, icon: "tray.fill")
                 insert(folder)
                 folders.append(folder)
             }
@@ -301,6 +354,7 @@ extension ModelContext {
             folder.links.append(link)
             folder.updatedAt = Date()
             insert(link)
+            LinkRules.shared.apply(to: link, in: self, overrideFolder: item.folderID == nil)
         }
         saveAndBackup()
         return pending.count

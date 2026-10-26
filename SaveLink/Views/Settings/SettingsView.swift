@@ -18,10 +18,10 @@ struct SettingsView: View {
     @AppStorage("openLinksInApp") private var openLinksInApp = true
     @Query private var folders: [Folder]
     @Query(filter: #Predicate<Link> { $0.deletedAt == nil }) private var links: [Link]
-    @StateObject private var authManager = AuthenticationManager.shared
     @StateObject private var subscriptionManager = SubscriptionManager.shared
     @State private var showSubscriptionView = false
     @State private var showShareExtensionHelp = false
+    @State private var showFaceIDHelp = false
     @State private var exportURL: URL?
     @State private var showImporter = false
     @State private var importMessage: String?
@@ -86,29 +86,30 @@ struct SettingsView: View {
                     } label: {
                         SettingsRow("Save from Safari", icon: "square.and.arrow.down.fill", color: .green)
                     }
+                    
+                    NavigationLink {
+                        AppIconPicker()
+                    } label: {
+                        SettingsLabel("App Icon", icon: "app.badge.fill", color: .pink)
+                    }
+                    
+                    NavigationLink {
+                        StatsView()
+                    } label: {
+                        SettingsLabel("Statistics", icon: "chart.bar.fill", color: .teal)
+                    }
                 }
 
                 Section {
-                    if authManager.biometricType() != "None" {
-                        if subscriptionManager.canUseFaceID {
-                            Toggle(isOn: $authManager.isBiometricEnabled) {
-                                SettingsLabel("Unlock with \(authManager.biometricType())", icon: authManager.biometricType() == "Face ID" ? "faceid" : "touchid", color: .green)
-                            }
-                        } else {
-                            Button {
-                                showSubscriptionView = true
-                            } label: {
-                                SettingsRow("Unlock with \(authManager.biometricType())", icon: "faceid", color: .green, badge: "PRO")
-                            }
-                        }
-                    } else {
-                        SettingsLabel("Biometrics not available", icon: "faceid", color: .gray)
-                            .foregroundStyle(.secondary)
+                    Button {
+                        showFaceIDHelp = true
+                    } label: {
+                        SettingsRow("Lock with Face ID", icon: "faceid", color: .green)
                     }
                 } header: {
-                    Text("Security")
+                    Text("Privacy")
                 } footer: {
-                    Text("Use biometrics to open PIN-protected folders without typing the PIN.")
+                    Text("iOS can lock or hide SaveLinks with Face ID, so nobody else can open it.")
                 }
 
                 Section {
@@ -141,7 +142,7 @@ struct SettingsView: View {
                                 .foregroundStyle(.primary)
                             Spacer()
                             if isCheckingLinks {
-                                Text("\(checkedLinks)/\(links.filter { !$0.isLocked }.count)")
+                                Text("\(checkedLinks)/\(links.count)")
                                     .font(.caption.monospacedDigit())
                                     .foregroundStyle(.secondary)
                                 ProgressView()
@@ -151,6 +152,12 @@ struct SettingsView: View {
                     .disabled(isCheckingLinks || links.isEmpty)
                     
                     NavigationLink {
+                        RulesView()
+                    } label: {
+                        SettingsLabel("Automatic Rules", icon: "wand.and.stars", color: .purple)
+                    }
+                    
+                    NavigationLink {
                         TrashView()
                     } label: {
                         SettingsLabel("Recently Deleted", icon: "trash.fill", color: .gray)
@@ -158,7 +165,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Your Data")
                 } footer: {
-                    Text("Import or export bookmarks from Safari, Chrome, Firefox or Pocket (HTML file). Links in PIN-protected folders are never exported or checked.")
+                    Text("Import or export bookmarks from Safari, Chrome, Firefox or Pocket (HTML file).")
                 }
                 
                 Section {
@@ -172,17 +179,6 @@ struct SettingsView: View {
                     Text("You'll also find SaveLinks actions in the Shortcuts app, Spotlight and on the Home Screen as widgets.")
                 }
 
-                #if DEBUG
-                Section {
-                    Toggle(isOn: $subscriptionManager.debugForcePro) {
-                        SettingsLabel("Simulate PRO", icon: "hammer.fill", color: .black)
-                    }
-                } header: {
-                    Text("Developer")
-                } footer: {
-                    Text("Only in Debug builds from Xcode. Unlocks every PRO feature without a purchase. This section doesn't exist in the App Store version.")
-                }
-                #endif
                 
                 Section("Support") {
                     Button {
@@ -242,6 +238,18 @@ struct SettingsView: View {
                 ShareExtensionHelpView()
                     .presentationDetents([.medium, .large])
             }
+            .sheet(isPresented: $showFaceIDHelp) {
+                HelpStepsView(
+                    title: "Lock with Face ID",
+                    intro: "iOS protects SaveLinks for you. It works even when you're not using the app.",
+                    steps: [
+                        ("Go to your Home Screen", "house"),
+                        ("Touch and hold the SaveLinks icon", "hand.tap"),
+                        ("Choose Require Face ID", "faceid"),
+                    ]
+                )
+                .presentationDetents([.medium])
+            }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
@@ -268,26 +276,26 @@ struct SettingsView: View {
         
         guard let data = try? Data(contentsOf: url),
               let html = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .isoLatin1) else {
-            importMessage = "The file couldn't be read."
+            importMessage = String(localized: "The file couldn't be read.")
             return
         }
         let entries = BookmarkImporter.parse(html)
         guard !entries.isEmpty else {
-            importMessage = "No links were found in this file. Export your bookmarks as HTML and try again."
+            importMessage = String(localized: "No links were found in this file. Export your bookmarks as HTML and try again.")
             return
         }
         let limit = isSubscribed ? nil : SharedStore.freeLinkLimit
         let summary = BookmarkImporter.importEntries(entries, into: modelContext, linkLimit: limit)
-        var lines = ["Imported \(summary.imported) links into \(summary.folders) new folders."]
-        if summary.duplicates > 0 { lines.append("\(summary.duplicates) were already saved.") }
-        if summary.skippedByLimit > 0 { lines.append("\(summary.skippedByLimit) were skipped because of the free 50-link limit. Upgrade to PRO to import them all.") }
+        var lines = [String(localized: "Imported \(summary.imported) links into \(summary.folders) new folders.")]
+        if summary.duplicates > 0 { lines.append(String(localized: "\(summary.duplicates) were already saved.")) }
+        if summary.skippedByLimit > 0 { lines.append(String(localized: "\(summary.skippedByLimit) were skipped because of the free 50-link limit. Upgrade to PRO to import them all.")) }
         importMessage = lines.joined(separator: " ")
         exportURL = LinkExporter.bookmarksFile(folders: folders)
         Haptics.success()
     }
     
     private func checkLinks() async {
-        let toCheck = links.filter { !$0.isLocked }
+        let toCheck = links
         isCheckingLinks = true
         checkedLinks = 0
         let broken = await BrokenLinkChecker.check(toCheck) { done in
@@ -295,8 +303,8 @@ struct SettingsView: View {
         }
         isCheckingLinks = false
         checkMessage = broken == 0
-            ? "All \(toCheck.count) links work."
-            : "\(broken) of \(toCheck.count) links look broken. Find them in Broken Links on the Home screen."
+            ? String(localized: "All \(toCheck.count) links work.")
+            : String(localized: "\(broken) of \(toCheck.count) links look broken. Find them in Broken Links on the Home screen.")
     }
     
     private var planCard: some View {
@@ -338,15 +346,15 @@ struct SettingsView: View {
 
     private var planSubtitle: String {
         if isSubscribed {
-            return "All features unlocked. Thank you!"
+            return String(localized: "All features unlocked. Thank you!")
         }
         if let monthly = subscriptionManager.availableProducts.first(where: { $0.id.contains("monthly") }) {
-            return "Unlimited links, PIN, Face ID and more from \(monthly.displayPrice)/month"
+            return String(localized: "Unlimited links, AI summaries and more from \(monthly.displayPrice)/month")
         }
-        return "Unlimited links, PIN, Face ID, QR scanner and colors"
+        return String(localized: "Unlimited links, AI summaries, QR scanner and colors")
     }
 
-    private func statItem(_ value: String, _ label: String) -> some View {
+    private func statItem(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(spacing: 2) {
             Text(value)
                 .font(.title3.weight(.bold))
@@ -361,11 +369,11 @@ struct SettingsView: View {
 
 /// Icon in a colored rounded square followed by a title, like the system Settings app.
 struct SettingsLabel: View {
-    let title: String
+    let title: LocalizedStringKey
     let icon: String
     let color: Color
 
-    init(_ title: String, icon: String, color: Color) {
+    init(_ title: LocalizedStringKey, icon: String, color: Color) {
         self.title = title
         self.icon = icon
         self.color = color
@@ -385,13 +393,13 @@ struct SettingsLabel: View {
 
 /// A tappable settings row with an optional badge and trailing chevron.
 struct SettingsRow: View {
-    let title: String
+    let title: LocalizedStringKey
     let icon: String
     let color: Color
     var badge: String? = nil
     var external = false
 
-    init(_ title: String, icon: String, color: Color, badge: String? = nil, external: Bool = false) {
+    init(_ title: LocalizedStringKey, icon: String, color: Color, badge: String? = nil, external: Bool = false) {
         self.title = title
         self.icon = icon
         self.color = color
@@ -421,42 +429,56 @@ struct SettingsRow: View {
 
 /// Explains how to save links from Safari and other apps with the share extension.
 struct ShareExtensionHelpView: View {
+    var body: some View {
+        HelpStepsView(
+            title: "Save from Safari",
+            intro: "Save links from Safari or any app in two taps.",
+            steps: [
+                ("Tap the Share button", "square.and.arrow.up"),
+                ("Choose SaveLinks in the app row (tap More if you don't see it)", "ellipsis"),
+                ("Pick a folder and tap Save", "checkmark.circle.fill"),
+            ]
+        )
+    }
+}
+
+/// A short numbered how-to shown in a sheet.
+struct HelpStepsView: View {
     @Environment(\.dismiss) private var dismiss
+    let title: LocalizedStringKey
+    let intro: LocalizedStringKey
+    let steps: [(text: LocalizedStringKey, icon: String)]
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 22) {
-                Text("Save links from Safari or any app in two taps.")
+                Text(intro)
                     .font(.body)
                     .foregroundStyle(.secondary)
-                step(1, "Tap the Share button", icon: "square.and.arrow.up")
-                step(2, "Choose SaveLinks in the app row (tap More if you don't see it)", icon: "ellipsis")
-                step(3, "Pick a folder and tap Save", icon: "checkmark.circle.fill")
+                ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                    HStack(spacing: 14) {
+                        Text("\(index + 1)")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .frame(width: 34, height: 34)
+                            .background(Theme.brand.gradient, in: Circle())
+                        Text(step.text)
+                            .font(.body.weight(.medium))
+                        Spacer(minLength: 0)
+                        Image(systemName: step.icon)
+                            .foregroundStyle(Theme.brand)
+                    }
+                }
                 Spacer()
             }
             .padding(24)
-            .navigationTitle("Save from Safari")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") { dismiss() }
                 }
             }
-        }
-    }
-
-    private func step(_ number: Int, _ text: String, icon: String) -> some View {
-        HStack(spacing: 14) {
-            Text("\(number)")
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(width: 34, height: 34)
-                .background(Theme.brand.gradient, in: Circle())
-            Text(text)
-                .font(.body.weight(.medium))
-            Spacer(minLength: 0)
-            Image(systemName: icon)
-                .foregroundStyle(Theme.brand)
         }
     }
 }

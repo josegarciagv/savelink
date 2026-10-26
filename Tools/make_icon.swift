@@ -91,20 +91,33 @@ func drawChain(in ctx: CGContext, colors: [CGColor], paintBookmark: () -> Void) 
 
 enum Variant { case light, dark, tinted }
 
-func render(_ variant: Variant, to url: URL) {
+/// Colors of the light icon: background gradient (start, middle, end) and chain gradient.
+struct Palette {
+    var start = (0.27, 0.50, 0.95)
+    var middle = (0.20, 0.40, 0.80)
+    var end = (0.42, 0.32, 0.86)
+
+    static let brand = Palette()
+    static let sunset = Palette(start: (1.00, 0.62, 0.25), middle: (0.98, 0.38, 0.38), end: (0.85, 0.24, 0.55))
+    static let mint = Palette(start: (0.25, 0.85, 0.70), middle: (0.12, 0.68, 0.60), end: (0.10, 0.48, 0.62))
+    static let graphite = Palette(start: (0.40, 0.42, 0.47), middle: (0.24, 0.25, 0.29), end: (0.12, 0.12, 0.15))
+}
+
+func render(_ variant: Variant, palette: Palette = .brand, to url: URL, pixels: Int = 1024) {
     let ctx = CGContext(data: nil, width: Int(size), height: Int(size), bitsPerComponent: 8, bytesPerRow: 0,
                         space: space, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
     // y-down coordinates
     ctx.translateBy(x: 0, y: size)
     ctx.scaleBy(x: 1, y: -1)
 
-    let brandBlue = rgb(0.20, 0.40, 0.80)
-    let brandPurple = rgb(0.42, 0.32, 0.86)
+    let paletteStart = rgb(palette.start.0, palette.start.1, palette.start.2)
+    let brandBlue = rgb(palette.middle.0, palette.middle.1, palette.middle.2)
+    let brandPurple = rgb(palette.end.0, palette.end.1, palette.end.2)
 
     // Background
     switch variant {
     case .light:
-        ctx.drawLinearGradient(gradient([rgb(0.27, 0.50, 0.95), brandBlue, brandPurple]),
+        ctx.drawLinearGradient(gradient([paletteStart, brandBlue, brandPurple]),
                                start: .zero, end: CGPoint(x: size, y: size), options: [])
         ctx.drawRadialGradient(gradient([rgb(1, 1, 1, 0.22), rgb(1, 1, 1, 0)]),
                                startCenter: CGPoint(x: 220, y: 160), startRadius: 0,
@@ -149,19 +162,51 @@ func render(_ variant: Variant, to url: URL) {
 
     // Chain
     switch variant {
-    case .light: drawChain(in: ctx, colors: [rgb(0.27, 0.50, 0.95), brandPurple], paintBookmark: paintBookmark)
+    case .light: drawChain(in: ctx, colors: [paletteStart, brandPurple], paintBookmark: paintBookmark)
     case .dark: drawChain(in: ctx, colors: [rgb(1, 1, 1), rgb(0.88, 0.90, 1)], paintBookmark: paintBookmark)
     case .tinted: drawChain(in: ctx, colors: [rgb(0.35, 0.35, 0.35), rgb(0.25, 0.25, 0.25)], paintBookmark: paintBookmark)
     }
 
-    let image = ctx.makeImage()!
+    var image = ctx.makeImage()!
+    if pixels != Int(size) {
+        let small = CGContext(data: nil, width: pixels, height: pixels, bitsPerComponent: 8, bytesPerRow: 0,
+                              space: space, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
+        small.interpolationQuality = .high
+        small.draw(image, in: CGRect(x: 0, y: 0, width: pixels, height: pixels))
+        image = small.makeImage()!
+    }
     let dest = CGImageDestinationCreateWithURL(url as CFURL, UTType.png.identifier as CFString, 1, nil)!
     CGImageDestinationAddImage(dest, image, nil)
     CGImageDestinationFinalize(dest)
 }
 
+// Usage:
+//   swift Tools/make_icon.swift <AppIcon.appiconset folder>          main icon (light, dark, tinted)
+//   swift Tools/make_icon.swift <Assets.xcassets folder> alternates  alternate icons + in-app previews
 let out = URL(fileURLWithPath: CommandLine.arguments[1])
-render(.light, to: out.appendingPathComponent("AppIcon.png"))
-render(.dark, to: out.appendingPathComponent("AppIcon-Dark.png"))
-render(.tinted, to: out.appendingPathComponent("AppIcon-Tinted.png"))
+if CommandLine.arguments.count > 2 && CommandLine.arguments[2] == "alternates" {
+    let alternates: [(String, Palette)] = [("Sunset", .sunset), ("Mint", .mint), ("Graphite", .graphite)]
+    let fm = FileManager.default
+    for (name, palette) in alternates {
+        let iconSet = out.appendingPathComponent("AppIcon-\(name).appiconset")
+        let preview = out.appendingPathComponent("IconPreview-\(name).imageset")
+        try? fm.createDirectory(at: iconSet, withIntermediateDirectories: true)
+        try? fm.createDirectory(at: preview, withIntermediateDirectories: true)
+        render(.light, palette: palette, to: iconSet.appendingPathComponent("AppIcon.png"))
+        render(.light, palette: palette, to: preview.appendingPathComponent("preview.png"), pixels: 240)
+        try? #"{"images":[{"filename":"AppIcon.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}"#
+            .write(to: iconSet.appendingPathComponent("Contents.json"), atomically: true, encoding: .utf8)
+        try? #"{"images":[{"filename":"preview.png","idiom":"universal"}],"info":{"author":"xcode","version":1}}"#
+            .write(to: preview.appendingPathComponent("Contents.json"), atomically: true, encoding: .utf8)
+    }
+    let preview = out.appendingPathComponent("IconPreview-Default.imageset")
+    try? fm.createDirectory(at: preview, withIntermediateDirectories: true)
+    render(.light, to: preview.appendingPathComponent("preview.png"), pixels: 240)
+    try? #"{"images":[{"filename":"preview.png","idiom":"universal"}],"info":{"author":"xcode","version":1}}"#
+        .write(to: preview.appendingPathComponent("Contents.json"), atomically: true, encoding: .utf8)
+} else {
+    render(.light, to: out.appendingPathComponent("AppIcon.png"))
+    render(.dark, to: out.appendingPathComponent("AppIcon-Dark.png"))
+    render(.tinted, to: out.appendingPathComponent("AppIcon-Tinted.png"))
+}
 print("done")

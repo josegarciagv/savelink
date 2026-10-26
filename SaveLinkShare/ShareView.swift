@@ -64,7 +64,7 @@ struct ShareView: View {
         .task {
             url = await loadURL()
             name = pageTitle?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            selectedFolderID = folders.first(where: { !$0.isLocked })?.id ?? folders.first?.id
+            selectedFolderID = folders.first?.id
             isLoading = false
         }
     }
@@ -108,7 +108,7 @@ struct ShareView: View {
                 } else {
                     Picker(selection: $selectedFolderID) {
                         ForEach(folders) { folder in
-                            Label(folder.name, systemImage: folder.isLocked ? "lock.fill" : folder.icon)
+                            Label(folder.name, systemImage: folder.icon)
                                 .tag(Optional(folder.id))
                         }
                     } label: {
@@ -138,7 +138,7 @@ struct ShareView: View {
         }
     }
 
-    private func message(icon: String, title: String, text: String) -> some View {
+    private func message(icon: String, title: LocalizedStringKey, text: LocalizedStringKey) -> some View {
         VStack(spacing: 12) {
             Image(systemName: icon)
                 .font(.system(size: 44))

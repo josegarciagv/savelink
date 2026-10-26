@@ -106,7 +106,8 @@ struct AddLinkView: View {
                         Text("This doesn't look like a valid URL.")
                             .foregroundStyle(.red)
                     } else if let duplicate {
-                        Label("Already saved as \"\(duplicate.name)\"\(duplicate.folder.map { " in \($0.name)" } ?? "")", systemImage: "exclamationmark.triangle.fill")
+                        Label("Already saved as \"\(duplicate.name)\"\(duplicate.folder.map { " in \($0.name)" } ?? "")",
+                              systemImage: "exclamationmark.triangle.fill")
                             .foregroundStyle(.orange)
                     } else if !subscriptionManager.canUseQRScanner {
                         Text("QR code scanner is a Premium feature.")
@@ -192,7 +193,7 @@ struct AddLinkView: View {
                                     .tag(Optional(folder.id))
                             }
                         } label: {
-                            Label("Folder", systemImage: selectedFolder?.icon ?? "folder")
+                            Text("Folder")
                         }
                     }
                 } header: {
@@ -218,14 +219,14 @@ struct AddLinkView: View {
             }
             .onAppear {
                 if selectedFolderID == nil {
-                    selectedFolderID = folders.first(where: { !$0.isLocked })?.id ?? folders.first?.id
+                    selectedFolderID = folders.first?.id
                 }
                 if url.isEmpty { urlFocused = true }
             }
             .task(id: url) {
                 await fetchTitle()
             }
-            .sheet(isPresented: $showQRScanner) {
+            .fullScreenCover(isPresented: $showQRScanner) {
                 QRScannerView(scannedCode: $scannedURL)
             }
             .sheet(isPresented: $showSubscriptionView) {
@@ -238,6 +239,15 @@ struct AddLinkView: View {
                 }
             } message: {
                 Text("You've reached the free plan limit of 50 links. Upgrade to Premium for unlimited links.")
+            }
+            .onChange(of: url) { _, newValue in
+                // Preselect the folder and tags from a matching rule.
+                guard let rule = LinkRules.shared.rule(for: newValue) else { return }
+                if let folderID = rule.folderID, folders.contains(where: { $0.id == folderID }) {
+                    selectedFolderID = folderID
+                }
+                tags = TagFormatter.merge(tags, rule.tags)
+                if rule.markReadLater { isReadLater = true }
             }
             .onChange(of: scannedURL) { oldValue, newValue in
                 if let scannedURL = newValue, !scannedURL.isEmpty {
@@ -298,7 +308,7 @@ struct AddLinkView: View {
         if let selectedFolder {
             folder = selectedFolder
         } else {
-            folder = Folder(name: "Inbox", pin: "", color: Theme.defaultFolderColor, icon: "tray.fill")
+            folder = Folder(name: "Inbox", color: Theme.defaultFolderColor, icon: "tray.fill")
             modelContext.insert(folder)
         }
 

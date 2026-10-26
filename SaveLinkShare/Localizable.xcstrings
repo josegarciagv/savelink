@@ -1,0 +1,169 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Added to %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadido a %@"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalles"
+          }
+        }
+      }
+    },
+    "Favorite": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorito"
+          }
+        }
+      }
+    },
+    "Folder": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpeta"
+          }
+        }
+      }
+    },
+    "Free limit reached": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Límite gratis alcanzado"
+          }
+        }
+      }
+    },
+    "Link ID": {
+      "shouldTranslate": false
+    },
+    "Mark as Read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como leído"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre"
+          }
+        }
+      }
+    },
+    "No link found": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontró ningún enlace"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        }
+      }
+    },
+    "Save to SaveLinks": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar en SaveLinks"
+          }
+        }
+      }
+    },
+    "Saved!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Guardado!"
+          }
+        }
+      }
+    },
+    "Share a web page to save it to SaveLinks.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparte una página web para guardarla en SaveLinks."
+          }
+        }
+      }
+    },
+    "The link will appear in SaveLinks the next time you open the app.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El enlace aparecerá en SaveLinks la próxima vez que abras la app."
+          }
+        }
+      }
+    },
+    "Will be saved to \"Inbox\"": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se guardará en \"Inbox\""
+          }
+        }
+      }
+    },
+    "You've saved %lld links. Open SaveLinks to upgrade to PRO for unlimited links.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardaste %lld enlaces. Abre SaveLinks para mejorar a PRO y tener enlaces ilimitados."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

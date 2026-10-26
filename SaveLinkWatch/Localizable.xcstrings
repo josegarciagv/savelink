@@ -1,0 +1,59 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "All caught up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo al día"
+          }
+        }
+      }
+    },
+    "Favorites": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoritos"
+          }
+        }
+      }
+    },
+    "Mark as Read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como leído"
+          }
+        }
+      }
+    },
+    "Open it on your iPhone to read the page.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ábrelo en tu iPhone para leer la página."
+          }
+        }
+      }
+    },
+    "Read Later": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer después"
+          }
+        }
+      }
+    },
+    "SaveLinks": {
+      "shouldTranslate": false
+    }
+  },
+  "version": "1.0"
+}

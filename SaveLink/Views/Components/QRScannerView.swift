@@ -2,294 +2,454 @@
 //  QRScannerView.swift
 //  SaveLink
 //
-//  Created by Jose Garcia on 1/2/26.
+//  Full-screen QR scanner: live camera with a framed viewfinder, flashlight,
+//  scanning from a photo, and a confirmation card before the link is used.
 //
 
 import SwiftUI
 import AVFoundation
-import AudioToolbox
+import PhotosUI
+import Vision
+import CoreImage
+import Combine
 
-struct QRScannerView: UIViewControllerRepresentable {
+// MARK: - Camera session
+
+@MainActor
+final class QRScannerSession: NSObject, ObservableObject, AVCaptureMetadataOutputObjectsDelegate {
+    enum Status { case starting, running, denied, unavailable }
+
+    @Published private(set) var status: Status = .starting
+    @Published private(set) var scannedCode: String?
+    @Published var torchOn = false {
+        didSet { setTorch(torchOn) }
+    }
+
+    let session = AVCaptureSession()
+    private var device: AVCaptureDevice?
+    private var isConfigured = false
+
+    var hasTorch: Bool { device?.hasTorch ?? false }
+
+    func start() async {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            break
+        case .notDetermined:
+            guard await AVCaptureDevice.requestAccess(for: .video) else {
+                status = .denied
+                return
+            }
+        default:
+            status = .denied
+            return
+        }
+        if !isConfigured {
+            guard configure() else {
+                status = .unavailable
+                return
+            }
+        }
+        let session = session
+        await Task.detached { session.startRunning() }.value
+        status = .running
+    }
+
+    func stop() {
+        torchOn = false
+        let session = session
+        Task.detached { session.stopRunning() }
+    }
+
+    /// Clears the last result and keeps scanning.
+    func resume() {
+        scannedCode = nil
+    }
+
+    private func configure() -> Bool {
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+              let input = try? AVCaptureDeviceInput(device: device),
+              session.canAddInput(input) else { return false }
+        let output = AVCaptureMetadataOutput()
+        guard session.canAddOutput(output) else { return false }
+        session.beginConfiguration()
+        session.addInput(input)
+        session.addOutput(output)
+        output.setMetadataObjectsDelegate(self, queue: .main)
+        output.metadataObjectTypes = [.qr]
+        session.commitConfiguration()
+        self.device = device
+        isConfigured = true
+        return true
+    }
+
+    private func setTorch(_ on: Bool) {
+        guard let device, device.hasTorch, (try? device.lockForConfiguration()) != nil else { return }
+        device.torchMode = on ? .on : .off
+        device.unlockForConfiguration()
+    }
+
+    nonisolated func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        guard let code = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue else { return }
+        MainActor.assumeIsolated {
+            guard scannedCode == nil else { return }
+            scannedCode = code
+        }
+    }
+
+    /// Reads a QR code from a picked image.
+    nonisolated static func decode(_ image: UIImage) async -> String? {
+        guard let cgImage = image.cgImage else { return nil }
+        let request = VNDetectBarcodesRequest()
+        request.symbologies = [.qr]
+        try? VNImageRequestHandler(cgImage: cgImage, orientation: .up).perform([request])
+        if let code = request.results?.compactMap(\.payloadStringValue).first {
+            return code
+        }
+        // Fallback when Vision isn't available (e.g. some simulators and older devices).
+        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+        return detector?.features(in: CIImage(cgImage: cgImage))
+            .compactMap { ($0 as? CIQRCodeFeature)?.messageString }
+            .first
+    }
+}
+
+private struct CameraPreview: UIViewRepresentable {
+    let session: AVCaptureSession
+
+    final class PreviewView: UIView {
+        override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
+        var previewLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
+    }
+
+    func makeUIView(context: Context) -> PreviewView {
+        let view = PreviewView()
+        view.previewLayer.session = session
+        view.previewLayer.videoGravity = .resizeAspectFill
+        view.backgroundColor = .black
+        return view
+    }
+
+    func updateUIView(_ uiView: PreviewView, context: Context) {}
+}
+
+// MARK: - Scanner screen
+
+struct QRScannerView: View {
     @Binding var scannedCode: String?
     @Environment(\.dismiss) private var dismiss
-    
-    func makeUIViewController(context: Context) -> QRScannerViewController {
-        let controller = QRScannerViewController()
-        controller.delegate = context.coordinator
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: QRScannerViewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, QRScannerDelegate {
-        let parent: QRScannerView
-        
-        init(_ parent: QRScannerView) {
-            self.parent = parent
-        }
-        
-        func didFindCode(_ code: String) {
-            parent.scannedCode = code
-            // Automatically dismiss after scanning
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.parent.dismiss()
+    @StateObject private var scanner = QRScannerSession()
+    @State private var photoItem: PhotosPickerItem?
+    @State private var photoResult: String?
+    @State private var photoFailed = false
+    @State private var scanLine = false
+
+    /// The code found by the camera or in a photo, waiting for confirmation.
+    private var result: String? { photoResult ?? scanner.scannedCode }
+
+    var body: some View {
+        GeometryReader { proxy in
+            let side = min(proxy.size.width * 0.7, 300)
+            let frame = CGRect(x: (proxy.size.width - side) / 2, y: proxy.size.height * 0.42 - side / 2, width: side, height: side)
+
+            ZStack {
+                Color.black.ignoresSafeArea()
+
+                if scanner.status == .running {
+                    CameraPreview(session: scanner.session)
+                        .ignoresSafeArea()
+                }
+
+                // The dimmed layer extends under the status bar, so its coordinates start
+                // above the safe area: shift the hole by the insets to line up with the corners.
+                dimmedOverlay(cutout: frame.offsetBy(dx: proxy.safeAreaInsets.leading, dy: proxy.safeAreaInsets.top))
+                viewfinder(frame: frame)
+
+                VStack(spacing: 0) {
+                    topBar
+                    Spacer()
+                    if let result {
+                        ResultCard(code: result, onUse: use, onRetry: retry)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 16)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    } else {
+                        bottomControls
+                    }
+                }
             }
         }
-        
-        func didFail() {
-            // Handle error if needed
+        .preferredColorScheme(.dark)
+        .animation(.snappy, value: result)
+        .task { await scanner.start() }
+        .onDisappear { scanner.stop() }
+        .onChange(of: scanner.scannedCode) { _, code in
+            if code != nil { Haptics.success() }
         }
-        
-        func didCancel() {
-            parent.dismiss()
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            Task { await readPhoto(item) }
+        }
+        .alert("No QR Code Found", isPresented: $photoFailed) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Choose a photo or screenshot that shows a QR code clearly.")
         }
     }
-}
 
-protocol QRScannerDelegate: AnyObject {
-    func didFindCode(_ code: String)
-    func didFail()
-    func didCancel()
-}
+    // MARK: Pieces
 
-class QRScannerViewController: UIViewController {
-    var captureSession: AVCaptureSession?
-    var previewLayer: AVCaptureVideoPreviewLayer?
-    weak var delegate: QRScannerDelegate?
-    var scannedCodeValue: String?
-    var successLabel: UILabel?
-    var cancelButton: UIButton?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.black
-        
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .denied, .restricted:
-            showUnavailable("Camera access is turned off. Enable it in Settings > SaveLinks > Camera.")
+    private func dimmedOverlay(cutout: CGRect) -> some View {
+        Canvas { context, size in
+            var path = Path(CGRect(origin: .zero, size: size))
+            path.addPath(Path(roundedRect: cutout, cornerRadius: 28, style: .continuous))
+            context.fill(path, with: .color(.black.opacity(0.55)), style: FillStyle(eoFill: true))
+        }
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+    }
+
+    private func viewfinder(frame: CGRect) -> some View {
+        let tint: Color = result == nil ? .white : .green
+        return ZStack {
+            CornerBrackets()
+                .stroke(tint, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                .frame(width: frame.width, height: frame.height)
+                .scaleEffect(result == nil ? 1 : 0.94)
+
+            if result == nil && scanner.status == .running {
+                LinearGradient(colors: [.clear, Theme.brand.opacity(0.9), .clear], startPoint: .leading, endPoint: .trailing)
+                    .frame(width: frame.width - 40, height: 2)
+                    .shadow(color: Theme.brand, radius: 6)
+                    .offset(y: scanLine ? frame.height / 2 - 24 : -frame.height / 2 + 24)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) { scanLine = true }
+                    }
+            }
+
+            if result == nil {
+                statusMessage
+                    .frame(width: frame.width - 32)
+            }
+        }
+        .position(x: frame.midX, y: frame.midY)
+        .animation(.snappy, value: result)
+        .allowsHitTesting(false)
+    }
+
+    @ViewBuilder
+    private var statusMessage: some View {
+        switch scanner.status {
+        case .denied:
+            VStack(spacing: 8) {
+                Image(systemName: "camera.fill").font(.title)
+                Text("Camera access is off")
+                    .font(.headline)
+            }
+            .foregroundStyle(.white)
+        case .unavailable:
+            VStack(spacing: 8) {
+                Image(systemName: "camera.badge.ellipsis").font(.title)
+                Text("Camera not available")
+                    .font(.headline)
+                Text("You can still scan a QR code from a photo.")
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.7))
+            }
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.white)
+        case .starting, .running:
+            EmptyView()
+        }
+    }
+
+    private var topBar: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.headline)
+                    .frame(width: 44, height: 44)
+                    .background(.ultraThinMaterial, in: Circle())
+            }
+            .accessibilityLabel("Close")
+            Spacer()
+            Text("Scan QR Code")
+                .font(.headline)
+            Spacer()
+            Button {
+                scanner.torchOn.toggle()
+                Haptics.tap()
+            } label: {
+                Image(systemName: scanner.torchOn ? "flashlight.on.fill" : "flashlight.off.fill")
+                    .font(.headline)
+                    .frame(width: 44, height: 44)
+                    .background(scanner.torchOn ? AnyShapeStyle(.yellow) : AnyShapeStyle(.ultraThinMaterial), in: Circle())
+                    .foregroundStyle(scanner.torchOn ? .black : .white)
+            }
+            .opacity(scanner.hasTorch ? 1 : 0)
+            .disabled(!scanner.hasTorch)
+            .accessibilityLabel(scanner.torchOn ? "Turn Flashlight Off" : "Turn Flashlight On")
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+    }
+
+    private var bottomControls: some View {
+        VStack(spacing: 16) {
+            if scanner.status != .unavailable {
+                Text(scanner.status == .denied ? "Allow camera access in Settings to scan." : "Point your camera at a QR code")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(.ultraThinMaterial, in: Capsule())
+            }
+
+            HStack(spacing: 12) {
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    Label("From Photos", systemImage: "photo.on.rectangle")
+                        .font(.headline)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(.ultraThinMaterial, in: Capsule())
+                }
+                if scanner.status == .denied {
+                    Button {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Label("Open Settings", systemImage: "gear")
+                            .font(.headline)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(Theme.brand, in: Capsule())
+                    }
+                }
+            }
+            .foregroundStyle(.white)
+        }
+        .padding(.bottom, 28)
+    }
+
+    // MARK: Actions
+
+    private func use() {
+        guard let result else { return }
+        scannedCode = result
+        Haptics.success()
+        dismiss()
+    }
+
+    private func retry() {
+        photoResult = nil
+        photoItem = nil
+        scanner.resume()
+    }
+
+    private func readPhoto(_ item: PhotosPickerItem) async {
+        guard let data = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: data),
+              let code = await QRScannerSession.decode(image) else {
+            photoItem = nil
+            photoFailed = true
+            Haptics.error()
             return
-        default:
-            break
         }
-        
-        captureSession = AVCaptureSession()
-        
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
-              let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice),
-              let captureSession = captureSession,
-              captureSession.canAddInput(videoInput) else {
-            showUnavailable("The camera isn't available on this device.")
-            delegate?.didFail()
-            return
-        }
-        captureSession.addInput(videoInput)
-        
-        let metadataOutput = AVCaptureMetadataOutput()
-        
-        if captureSession.canAddOutput(metadataOutput) {
-            captureSession.addOutput(metadataOutput)
-            
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr, .ean8, .ean13, .pdf417, .code128]
-        } else {
-            showUnavailable("The camera isn't available on this device.")
-            delegate?.didFail()
-            return
-        }
-        
-        let preview = AVCaptureVideoPreviewLayer(session: captureSession)
-        preview.frame = view.layer.bounds
-        preview.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(preview)
-        previewLayer = preview
-        
-        // Add overlay
-        let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        overlayView.translatesAutoresizingMaskIntoConstraints = false
-        overlayView.isUserInteractionEnabled = false // Don't block touches
-        view.addSubview(overlayView)
-        
-        // Add cancel button (after overlay so it's on top)
-        let cancelBtn = UIButton(type: .system)
-        cancelBtn.setTitle("Cancel", for: .normal)
-        cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        cancelBtn.setTitleColor(.white, for: .normal)
-        cancelBtn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
-        cancelBtn.layer.cornerRadius = 10
-        cancelBtn.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
-        cancelBtn.isUserInteractionEnabled = true
-        view.addSubview(cancelBtn)
-        self.cancelButton = cancelBtn
-        
-        NSLayoutConstraint.activate([
-            cancelBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            cancelBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cancelBtn.widthAnchor.constraint(equalToConstant: 120),
-            cancelBtn.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        // Add scanning frame
-        let scanningFrame = UIView()
-        scanningFrame.layer.borderColor = UIColor.white.cgColor
-        scanningFrame.layer.borderWidth = 3
-        scanningFrame.layer.cornerRadius = 10
-        scanningFrame.backgroundColor = UIColor.clear
-        scanningFrame.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scanningFrame)
-        
-        NSLayoutConstraint.activate([
-            overlayView.topAnchor.constraint(equalTo: view.topAnchor),
-            overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            scanningFrame.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scanningFrame.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            scanningFrame.widthAnchor.constraint(equalToConstant: 250),
-            scanningFrame.heightAnchor.constraint(equalToConstant: 250)
-        ])
-        
-        // Create hole in overlay using mask
-        DispatchQueue.main.async {
-            let maskLayer = CAShapeLayer()
-            let path = UIBezierPath(rect: overlayView.bounds)
-            let scanningRect = CGRect(x: self.view.bounds.midX - 125, y: self.view.bounds.midY - 125, width: 250, height: 250)
-            path.append(UIBezierPath(rect: scanningRect).reversing())
-            maskLayer.path = path.cgPath
-            overlayView.layer.mask = maskLayer
-        }
-        
-        // Add instruction label
-        let instructionLabel = UILabel()
-        instructionLabel.text = "Point camera at QR code"
-        instructionLabel.textColor = .white
-        instructionLabel.textAlignment = .center
-        instructionLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(instructionLabel)
-        
-        // Add success label (initially hidden)
-        let successLabel = UILabel()
-        successLabel.text = ""
-        successLabel.textColor = .green
-        successLabel.textAlignment = .center
-        successLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        successLabel.numberOfLines = 2
-        successLabel.translatesAutoresizingMaskIntoConstraints = false
-        successLabel.isHidden = true
-        view.addSubview(successLabel)
-        self.successLabel = successLabel
-        
-        NSLayoutConstraint.activate([
-            instructionLabel.topAnchor.constraint(equalTo: scanningFrame.bottomAnchor, constant: 20),
-            instructionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            instructionLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
-            instructionLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
-            
-            successLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 10),
-            successLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            successLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
-            successLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
-        ])
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.captureSession?.startRunning()
-        }
-    }
-    
-    @objc func cancelTapped() {
-        delegate?.didCancel()
-    }
-    
-    /// Shows a message and a Close button when the camera can't be used.
-    private func showUnavailable(_ message: String) {
-        let label = UILabel()
-        label.text = message
-        label.textColor = .white
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        
-        let closeButton = UIButton(configuration: .filled())
-        closeButton.setTitle("Close", for: .normal)
-        closeButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            closeButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
-            closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        guard let captureSession = captureSession else { return }
-        
-        if !captureSession.isRunning {
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                self?.captureSession?.startRunning()
-            }
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let captureSession = captureSession else { return }
-        
-        if captureSession.isRunning {
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                self?.captureSession?.stopRunning()
-            }
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if let previewLayer = previewLayer {
-            previewLayer.frame = view.layer.bounds
-        }
+        photoResult = code
+        Haptics.success()
     }
 }
 
-extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        // Only handle the first code; the delegate keeps firing until the session stops.
-        guard scannedCodeValue == nil else { return }
-        let session = captureSession
-        DispatchQueue.global(qos: .userInitiated).async {
-            session?.stopRunning()
-        }
-        
-        if let metadataObject = metadataObjects.first {
-            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-            guard let stringValue = readableObject.stringValue else { return }
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
-            scannedCodeValue = stringValue
-            delegate?.didFindCode(stringValue)
-            
-            // Show brief success message
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.successLabel?.text = "✓ URL scanned successfully!"
-                self.successLabel?.isHidden = false
+/// Shows what was scanned and asks before using it.
+private struct ResultCard: View {
+    let code: String
+    let onUse: () -> Void
+    let onRetry: () -> Void
+
+    private var isLink: Bool { Link.isValidURL(code) }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack(spacing: 14) {
+                if isLink {
+                    FaviconView(urlString: code, color: Theme.brand, size: 48)
+                } else {
+                    Image(systemName: "text.alignleft")
+                        .font(.title3)
+                        .frame(width: 48, height: 48)
+                        .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                }
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(isLink ? Link.domain(for: code) : String(localized: "Not a link"))
+                        .font(.headline)
+                    Text(code)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+                Spacer(minLength: 0)
             }
+            if !isLink {
+                Text("This QR code has text, not a web link.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            HStack(spacing: 12) {
+                Button(action: onRetry) {
+                    Text("Scan Again")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                Button(action: onUse) {
+                    Text("Use Link")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(isLink ? Theme.brand : Color.gray.opacity(0.4), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                .disabled(!isLink)
+            }
+            .foregroundStyle(.white)
         }
+        .padding(18)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
+/// Four rounded corner marks around the scanning area.
+private struct CornerBrackets: Shape {
+    func path(in rect: CGRect) -> Path {
+        let length = min(rect.width, rect.height) * 0.16
+        let radius: CGFloat = 26
+        var path = Path()
+        // Top-left
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY + length + radius))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + radius))
+        path.addQuadCurve(to: CGPoint(x: rect.minX + radius, y: rect.minY), control: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.minX + radius + length, y: rect.minY))
+        // Top-right
+        path.move(to: CGPoint(x: rect.maxX - radius - length, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - radius, y: rect.minY))
+        path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.minY + radius), control: CGPoint(x: rect.maxX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + radius + length))
+        // Bottom-right
+        path.move(to: CGPoint(x: rect.maxX, y: rect.maxY - radius - length))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - radius))
+        path.addQuadCurve(to: CGPoint(x: rect.maxX - radius, y: rect.maxY), control: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.maxX - radius - length, y: rect.maxY))
+        // Bottom-left
+        path.move(to: CGPoint(x: rect.minX + radius + length, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX + radius, y: rect.maxY))
+        path.addQuadCurve(to: CGPoint(x: rect.minX, y: rect.maxY - radius), control: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - radius - length))
+        return path
+    }
+}

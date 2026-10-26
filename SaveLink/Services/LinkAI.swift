@@ -27,7 +27,7 @@ enum LinkAI {
         var errorDescription: String? {
             switch self {
             case .unavailable(let reason): return reason
-            case .noContent: return "The page couldn't be read."
+            case .noContent: return String(localized: "The page couldn't be read.")
             }
         }
     }
@@ -42,13 +42,13 @@ enum LinkAI {
         case .available:
             return nil
         case .unavailable(.deviceNotEligible):
-            return "This device doesn't support Apple Intelligence."
+            return String(localized: "This device doesn't support Apple Intelligence.")
         case .unavailable(.appleIntelligenceNotEnabled):
-            return "Turn on Apple Intelligence in Settings to use AI summaries."
+            return String(localized: "Turn on Apple Intelligence in Settings to use AI summaries.")
         case .unavailable(.modelNotReady):
-            return "Apple Intelligence is still downloading. Try again later."
+            return String(localized: "Apple Intelligence is still downloading. Try again later.")
         case .unavailable:
-            return "Apple Intelligence isn't available right now."
+            return String(localized: "Apple Intelligence isn't available right now.")
         }
     }
 

@@ -1,0 +1,130 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Add a link to ${applicationName}": {
+      "extractionState": "stale",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade un enlace a ${applicationName}"
+          }
+        }
+      }
+    },
+    "Open ${link} in ${applicationName}": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringSet": {
+            "state": "new",
+            "values": [
+              "Open ${link} in ${applicationName}",
+              "Open a saved link in ${applicationName}"
+            ]
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Abre ${link} en ${applicationName}"
+          }
+        }
+      }
+    },
+    "Open a saved link in ${applicationName}": {
+      "extractionState": "stale",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre un enlace guardado en ${applicationName}"
+          }
+        }
+      }
+    },
+    "Read later in ${applicationName}": {
+      "extractionState": "stale",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer después en ${applicationName}"
+          }
+        }
+      }
+    },
+    "Save a link in ${applicationName}": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringSet": {
+            "state": "new",
+            "values": [
+              "Save a link in ${applicationName}",
+              "Add a link to ${applicationName}"
+            ]
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Guarda un enlace en ${applicationName}"
+          }
+        }
+      }
+    },
+    "Save clipboard to ${applicationName}": {
+      "extractionState": "stale",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda el portapapeles en ${applicationName}"
+          }
+        }
+      }
+    },
+    "Save copied link in ${applicationName}": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringSet": {
+            "state": "new",
+            "values": [
+              "Save copied link in ${applicationName}",
+              "Save clipboard to ${applicationName}"
+            ]
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Guarda el enlace copiado en ${applicationName}"
+          }
+        }
+      }
+    },
+    "What do I have to read in ${applicationName}": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringSet": {
+            "state": "new",
+            "values": [
+              "What do I have to read in ${applicationName}",
+              "Read later in ${applicationName}"
+            ]
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Qué tengo para leer en ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

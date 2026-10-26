@@ -13,10 +13,18 @@ struct FolderDetailView: View {
     let folder: Folder
     @State private var showAddLink = false
     @State private var showEditFolder = false
-    @State private var isUnlocked = false
     @State private var searchText = ""
     @State private var favoritesOnly = false
     @State private var linkToMove: Link?
+    @State private var editMode: EditMode = .inactive
+    @State private var selection = Set<Link.ID>()
+    @State private var showBulkMove = false
+    @State private var showBulkTags = false
+    @State private var bulkTags: [String] = []
+
+    private var selectedLinks: [Link] {
+        folder.activeLinks.filter { selection.contains($0.id) }
+    }
     @AppStorage("linkSortOrder") private var linkSortOrder: String = "newToOld"
 
     enum LinkSortOrder: String, CaseIterable {
@@ -28,11 +36,11 @@ struct FolderDetailView: View {
 
         var displayName: String {
             switch self {
-            case .newToOld: return "New to Old"
-            case .oldToNew: return "Old to New"
-            case .lastUpdated: return "Last Updated"
-            case .name: return "Name (A–Z)"
-            case .mostOpened: return "Most Opened"
+            case .newToOld: return String(localized: "New to Old")
+            case .oldToNew: return String(localized: "Old to New")
+            case .lastUpdated: return String(localized: "Last Updated")
+            case .name: return String(localized: "Name (A–Z)")
+            case .mostOpened: return String(localized: "Most Opened")
             }
         }
     }
@@ -67,20 +75,7 @@ struct FolderDetailView: View {
     }
 
     var body: some View {
-        Group {
-            if isUnlocked || !folder.isLocked {
-                content
-            } else {
-                PinEntryView(folderName: folder.name, correctPin: folder.pin, tint: tint) {
-                    withAnimation(.snappy) { isUnlocked = true }
-                }
-            }
-        }
-        .tint(tint)
-    }
-
-    private var content: some View {
-        List {
+        List(selection: $selection) {
             Section {
                 header
                     .listRowBackground(Color.clear)
@@ -136,36 +131,104 @@ struct FolderDetailView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .listSectionSpacing(.compact)
+        .tint(tint)
+        .environment(\.editMode, $editMode)
         .navigationTitle(folder.name)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, prompt: "Search in \(folder.name)")
         .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                Menu {
-                    Toggle(isOn: $favoritesOnly) {
-                        Label("Favorites Only", systemImage: "star")
+            if editMode.isEditing {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        withAnimation { editMode = .inactive }
+                        selection.removeAll()
                     }
-                    Picker("Sort", selection: $linkSortOrder) {
-                        ForEach(LinkSortOrder.allCases, id: \.rawValue) { order in
-                            Text(order.displayName).tag(order.rawValue)
-                        }
-                    }
-                    Divider()
-                    Button {
-                        showEditFolder = true
-                    } label: {
-                        Label("Edit Folder", systemImage: "pencil")
-                    }
-                } label: {
-                    Image(systemName: favoritesOnly ? "line.3.horizontal.decrease.circle.fill" : "ellipsis.circle")
+                    .fontWeight(.semibold)
                 }
+                ToolbarItemGroup(placement: .bottomBar) {
+                    bulkActions
+                }
+            } else {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Menu {
+                        Button {
+                            withAnimation { editMode = .active }
+                        } label: {
+                            Label("Select Links", systemImage: "checkmark.circle")
+                        }
+                        .disabled(folder.activeLinks.isEmpty)
+                        Divider()
+                        Toggle(isOn: $favoritesOnly) {
+                            Label("Favorites Only", systemImage: "star")
+                        }
+                        // Sort options live in a submenu so the main menu stays short.
+                        Picker(selection: $linkSortOrder) {
+                            ForEach(LinkSortOrder.allCases, id: \.rawValue) { order in
+                                Text(order.displayName).tag(order.rawValue)
+                            }
+                        } label: {
+                            Label("Sort", systemImage: "arrow.up.arrow.down")
+                        }
+                        .pickerStyle(.menu)
+                        Divider()
+                        ShareLink(item: FolderBookmarks(folder: folder), preview: SharePreview(folder.name)) {
+                            Label("Share Folder", systemImage: "square.and.arrow.up")
+                        }
+                        Button {
+                            showEditFolder = true
+                        } label: {
+                            Label("Edit Folder", systemImage: "pencil")
+                        }
+                    } label: {
+                        Image(systemName: favoritesOnly ? "line.3.horizontal.decrease.circle.fill" : "ellipsis.circle")
+                    }
 
-                Button {
-                    showAddLink = true
-                } label: {
-                    Image(systemName: "plus")
+                    Button {
+                        showAddLink = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
+        }
+        .sheet(isPresented: $showBulkMove) {
+            BulkMoveView(links: selectedLinks) {
+                selection.removeAll()
+                editMode = .inactive
+            }
+        }
+        .sheet(isPresented: $showBulkTags) {
+            NavigationStack {
+                Form {
+                    Section {
+                        TagEditor(tags: $bulkTags, color: tint)
+                    } footer: {
+                        Text("These tags are added to the \(selection.count) selected links.")
+                    }
+                }
+                .navigationTitle("Add Tags")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { showBulkTags = false }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Add") {
+                            for link in selectedLinks {
+                                link.tags = TagFormatter.merge(link.tags, bulkTags)
+                            }
+                            folder.modelContext?.saveAndBackup()
+                            bulkTags = []
+                            showBulkTags = false
+                            Haptics.success()
+                        }
+                        .fontWeight(.semibold)
+                        .disabled(bulkTags.isEmpty)
+                    }
+                }
+            }
+            .presentationDetents([.medium])
         }
         .sheet(isPresented: $showAddLink) {
             AddLinkView(folder: folder)
@@ -179,6 +242,44 @@ struct FolderDetailView: View {
         .sheet(item: $linkToMove) { link in
             MoveLinkView(link: link)
         }
+    }
+
+    @ViewBuilder
+    private var bulkActions: some View {
+        let none = selection.isEmpty
+        Button {
+            showBulkMove = true
+        } label: {
+            Label("Move", systemImage: "folder")
+        }
+        .disabled(none)
+        Spacer()
+        Button {
+            showBulkTags = true
+        } label: {
+            Label("Tag", systemImage: "number")
+        }
+        .disabled(none)
+        Spacer()
+        Button {
+            let makeFavorite = selectedLinks.contains { !$0.isFavorite }
+            selectedLinks.forEach { $0.isFavorite = makeFavorite }
+            folder.modelContext?.saveAndBackup()
+            Haptics.tap()
+        } label: {
+            Label("Favorite", systemImage: "star")
+        }
+        .disabled(none)
+        Spacer()
+        Button(role: .destructive) {
+            selectedLinks.forEach { $0.moveToTrash() }
+            folder.modelContext?.saveAndBackup()
+            selection.removeAll()
+            Haptics.success()
+        } label: {
+            Label("Delete", systemImage: "trash")
+        }
+        .disabled(none)
     }
 
     private var header: some View {
@@ -195,9 +296,6 @@ struct FolderDetailView: View {
                 HStack(spacing: 12) {
                     headerStat("\(folder.activeLinks.count)", icon: "link")
                     headerStat("\(folder.activeLinks.filter(\.isFavorite).count)", icon: "star.fill")
-                    if folder.isLocked {
-                        headerStat("Protected", icon: "lock.fill")
-                    }
                 }
                 .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
@@ -208,7 +306,7 @@ struct FolderDetailView: View {
         .background(tint.opacity(0.1), in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
     }
 
-    private func headerStat(_ text: String, icon: String) -> some View {
+    private func headerStat(_ text: LocalizedStringKey, icon: String) -> some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
             Text(text)
@@ -244,158 +342,51 @@ struct FolderDetailView: View {
     }
 }
 
-struct PinEntryView: View {
-    let folderName: String
-    let correctPin: String
-    var tint: Color = Theme.brand
-    let onSuccess: () -> Void
-
-    @State private var pin = ""
-    @State private var showError = false
-    @State private var shakes: CGFloat = 0
-    @StateObject private var authManager = AuthenticationManager.shared
-    @State private var isAuthenticating = false
-
-    private var canUseBiometrics: Bool {
-        SubscriptionManager.shared.canUseFaceID &&
-        authManager.isBiometricEnabled &&
-        authManager.biometricType() != "None"
-    }
-
-    var body: some View {
-        VStack(spacing: 28) {
-            Spacer()
-
-            Image(systemName: "lock.fill")
-                .font(.system(size: 30, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: 72, height: 72)
-                .background(tint.gradient, in: Circle())
-
-            VStack(spacing: 6) {
-                Text(folderName)
-                    .font(.title2.weight(.bold))
-                Text(showError ? "Incorrect PIN, try again" : "Enter PIN to open this folder")
-                    .font(.subheadline)
-                    .foregroundStyle(showError ? .red : .secondary)
-            }
-
-            HStack(spacing: 22) {
-                ForEach(0..<4, id: \.self) { index in
-                    Circle()
-                        .fill(index < pin.count ? (showError ? Color.red : tint) : Color.clear)
-                        .overlay(Circle().strokeBorder(showError ? Color.red : tint, lineWidth: 2))
-                        .frame(width: 16, height: 16)
-                }
-            }
-            .modifier(ShakeEffect(animatableData: shakes))
-
-            Spacer()
-
-            keypad
-                .padding(.bottom, 24)
-        }
-        .padding(.horizontal, 40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemGroupedBackground))
-        .onAppear {
-            if canUseBiometrics {
-                authenticateWithBiometric()
-            }
-        }
-    }
-
-    private var keypad: some View {
-        let rows = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
-        return VStack(spacing: 16) {
-            ForEach(rows, id: \.self) { row in
-                HStack(spacing: 24) {
-                    ForEach(row, id: \.self) { digit in
-                        keyButton(digit)
-                    }
-                }
-            }
-            HStack(spacing: 24) {
-                if canUseBiometrics {
-                    Button(action: authenticateWithBiometric) {
-                        Image(systemName: authManager.biometricType() == "Face ID" ? "faceid" : "touchid")
-                            .font(.system(size: 28))
-                            .foregroundStyle(tint)
-                            .frame(width: 76, height: 76)
-                    }
-                    .disabled(isAuthenticating)
-                } else {
-                    Color.clear.frame(width: 76, height: 76)
-                }
-                keyButton("0")
-                Button {
-                    if !pin.isEmpty { pin.removeLast() }
-                } label: {
-                    Image(systemName: "delete.left")
-                        .font(.system(size: 24))
-                        .foregroundStyle(.primary)
-                        .frame(width: 76, height: 76)
-                }
-                .opacity(pin.isEmpty ? 0.3 : 1)
-            }
-        }
-    }
-
-    private func keyButton(_ digit: String) -> some View {
-        Button {
-            press(digit)
-        } label: {
-            Text(digit)
-                .font(.system(size: 30, weight: .medium, design: .rounded))
-                .foregroundStyle(.primary)
-                .frame(width: 76, height: 76)
-                .background(Color(.secondarySystemGroupedBackground), in: Circle())
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func press(_ digit: String) {
-        guard pin.count < 4 else { return }
-        Haptics.tap()
-        showError = false
-        pin.append(digit)
-        guard pin.count == 4 else { return }
-        if pin == correctPin {
-            Haptics.success()
-            onSuccess()
-        } else {
-            Haptics.error()
-            showError = true
-            withAnimation(.default) { shakes += 1 }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                pin = ""
-            }
-        }
-    }
-
-    private func authenticateWithBiometric() {
-        isAuthenticating = true
-        authManager.authenticate { success, error in
-            isAuthenticating = false
-            if success {
-                Haptics.success()
-                onSuccess()
-            }
-        }
-    }
-}
-
-struct ShakeEffect: GeometryEffect {
-    var animatableData: CGFloat
-
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        ProjectionTransform(CGAffineTransform(translationX: 10 * sin(animatableData * .pi * 4), y: 0))
-    }
-}
-
 #Preview {
     NavigationStack {
-        FolderDetailView(folder: Folder(name: "Test", pin: "1234", color: "007AFF"))
+        FolderDetailView(folder: Folder(name: "Test", color: "007AFF"))
     }
     .modelContainer(for: [Folder.self, Link.self], inMemory: true)
+}
+
+/// Moves several links at once.
+struct BulkMoveView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Folder.name) private var folders: [Folder]
+    let links: [Link]
+    let onDone: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            List(folders) { folder in
+                Button {
+                    for link in links where link.folder?.id != folder.id {
+                        link.folder?.links.removeAll { $0.id == link.id }
+                        link.folder = folder
+                        folder.links.append(link)
+                    }
+                    folder.updatedAt = Date()
+                    folder.modelContext?.saveAndBackup()
+                    Haptics.success()
+                    onDone()
+                    dismiss()
+                } label: {
+                    Label {
+                        Text(folder.name).foregroundStyle(.primary)
+                    } icon: {
+                        Image(systemName: folder.icon).foregroundStyle(Color.folder(folder.color))
+                    }
+                }
+            }
+            .navigationTitle("Move \(links.count) Links")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+    }
 }

@@ -3,11 +3,12 @@
 //  SaveLinkWidgets
 //
 //  Home Screen and Lock Screen widgets. They read a snapshot the app writes to the
-//  App Group, so links from PIN-protected folders never appear here.
+//  App Group.
 //
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 private let brand = Color(red: 0.2, green: 0.4, blue: 0.8)
 
@@ -100,7 +101,7 @@ struct LinkLine: View {
 }
 
 struct WidgetHeader: View {
-    let title: String
+    let title: LocalizedStringKey
     let icon: String
     let tint: Color
     var count: Int? = nil
@@ -123,7 +124,7 @@ struct WidgetHeader: View {
 
 struct EmptyWidgetMessage: View {
     let icon: String
-    let text: String
+    let text: LocalizedStringKey
 
     var body: some View {
         VStack(spacing: 6) {
@@ -257,7 +258,18 @@ struct ReadLaterWidgetView: View {
                 if links.isEmpty {
                     EmptyWidgetMessage(icon: "checkmark.circle", text: "All caught up!")
                 } else {
-                    ForEach(links.prefix(family == .systemLarge ? 7 : 3)) { LinkLine(link: $0) }
+                    ForEach(links.prefix(family == .systemLarge ? 7 : 3)) { link in
+                        HStack {
+                            LinkLine(link: link)
+                            // Interactive: marks the link as read without opening the app.
+                            Button(intent: MarkReadIntent(linkID: link.id)) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.title3)
+                                    .foregroundStyle(.orange)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                     Spacer(minLength: 0)
                 }
             }
@@ -279,6 +291,21 @@ struct ReadLaterWidget: Widget {
     }
 }
 
+// MARK: - Control Center
+
+/// A Control Center / Lock Screen / Action button control that saves the copied link.
+struct SaveLinkControl: ControlWidget {
+    var body: some ControlWidgetConfiguration {
+        StaticControlConfiguration(kind: "gvwebsite.savelinks.SaveLinkControl") {
+            ControlWidgetButton(action: OpenURLIntent(URL(string: "savelink://paste")!)) {
+                Label("Save Link", systemImage: "link.badge.plus")
+            }
+        }
+        .displayName("Save Copied Link")
+        .description("Opens SaveLinks ready to save the link in your clipboard.")
+    }
+}
+
 // MARK: - Bundle
 
 @main
@@ -286,6 +313,7 @@ struct SaveLinkWidgetBundle: WidgetBundle {
     var body: some Widget {
         FavoritesWidget()
         ReadLaterWidget()
+        SaveLinkControl()
     }
 }
 

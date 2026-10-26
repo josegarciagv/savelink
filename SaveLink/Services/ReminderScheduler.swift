@@ -16,10 +16,10 @@ enum ReminderScheduler {
 
         var title: String {
             switch self {
-            case .inOneHour: return "In 1 Hour"
-            case .tonight: return "Tonight (8 PM)"
-            case .tomorrowMorning: return "Tomorrow (9 AM)"
-            case .weekend: return "This Weekend"
+            case .inOneHour: return String(localized: "In 1 Hour")
+            case .tonight: return String(localized: "Tonight (8 PM)")
+            case .tomorrowMorning: return String(localized: "Tomorrow (9 AM)")
+            case .weekend: return String(localized: "This Weekend")
             }
         }
 
@@ -63,7 +63,7 @@ enum ReminderScheduler {
         guard granted else { return false }
 
         let content = UNMutableNotificationContent()
-        content.title = "Time to read"
+        content.title = String(localized: "Time to read")
         content.body = link.name
         content.subtitle = link.domain
         content.sound = .default

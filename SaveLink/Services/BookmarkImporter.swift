@@ -78,10 +78,10 @@ enum BookmarkImporter {
             }
 
             let folder: Folder
-            if let match = folders.first(where: { $0.name.caseInsensitiveCompare(entry.folder) == .orderedSame && !$0.isLocked }) {
+            if let match = folders.first(where: { $0.name.caseInsensitiveCompare(entry.folder) == .orderedSame }) {
                 folder = match
             } else {
-                folder = Folder(name: entry.folder, pin: "", color: Theme.defaultFolderColor, icon: "square.and.arrow.down.fill")
+                folder = Folder(name: entry.folder, color: Theme.defaultFolderColor, icon: "square.and.arrow.down.fill")
                 context.insert(folder)
                 folders.append(folder)
                 result.folders += 1
@@ -93,6 +93,7 @@ enum BookmarkImporter {
             link.folder = folder
             folder.links.append(link)
             context.insert(link)
+            LinkRules.shared.apply(to: link, in: context, overrideFolder: true)
             savedURLs.insert(url.lowercased())
             count += 1
             result.imported += 1

@@ -14,17 +14,6 @@ class SubscriptionManager: ObservableObject {
     static let shared = SubscriptionManager()
     
     @Published var subscriptionStatus: SubscriptionStatus = .free
-    
-    #if DEBUG
-    /// Development only: unlocks PRO without buying it, to test premium features in the
-    /// simulator. This code isn't compiled into Release (App Store) builds.
-    @Published var debugForcePro: Bool = UserDefaults.standard.bool(forKey: "debugForcePro") {
-        didSet {
-            UserDefaults.standard.set(debugForcePro, forKey: "debugForcePro")
-            Task { await checkSubscriptionStatus() }
-        }
-    }
-    #endif
     @Published var availableProducts: [Product] = []
     @Published var isLoading = false
     
@@ -38,15 +27,29 @@ class SubscriptionManager: ObservableObject {
     enum SubscriptionStatus {
         case free
         case subscribed
-        case expired
+    }
+    
+    enum PurchaseResult {
+        case purchased
+        /// Waiting for approval (Ask to Buy) or extra bank verification.
+        case pending
+        case cancelled
+    }
+    
+    enum RestoreResult {
+        case restored
+        case nothingToRestore
+        case failed
     }
     
     private init() {
         // Start listening for transaction updates
         updateListenerTask = listenForTransactions()
         
-        // Load initial subscription status
+        // Finish purchases interrupted last time (e.g. the app closed mid-purchase),
+        // then load the current status.
         Task {
+            await finishUnfinishedTransactions()
             await checkSubscriptionStatus()
         }
     }
@@ -67,7 +70,7 @@ class SubscriptionManager: ObservableObject {
         }
     }
     
-    func purchase(_ product: Product) async throws -> Bool {
+    func purchase(_ product: Product) async throws -> PurchaseResult {
         let result = try await product.purchase()
         
         switch result {
@@ -75,11 +78,22 @@ class SubscriptionManager: ObservableObject {
             let transaction = try checkVerified(verification)
             await transaction.finish()
             await checkSubscriptionStatus()
-            return true
-        case .userCancelled, .pending:
-            return false
+            return .purchased
+        case .pending:
+            // Transaction.updates delivers it once approved.
+            return .pending
+        case .userCancelled:
+            return .cancelled
         @unknown default:
-            return false
+            return .cancelled
+        }
+    }
+    
+    private func finishUnfinishedTransactions() async {
+        for await result in Transaction.unfinished {
+            if let transaction = try? checkVerified(result) {
+                await transaction.finish()
+            }
         }
     }
     
@@ -90,7 +104,8 @@ class SubscriptionManager: ObservableObject {
             do {
                 let transaction = try checkVerified(result)
                 
-                if productIDs.contains(transaction.productID) {
+                // Refunded or revoked subscriptions don't count.
+                if productIDs.contains(transaction.productID), transaction.revocationDate == nil {
                     isSubscribed = true
                     break
                 }
@@ -99,16 +114,21 @@ class SubscriptionManager: ObservableObject {
             }
         }
         
-        #if DEBUG
-        if debugForcePro { isSubscribed = true }
-        #endif
         subscriptionStatus = isSubscribed ? .subscribed : .free
         SharedStore.publish(isPro: isSubscribed)
     }
     
-    func restorePurchases() async {
-        try? await AppStore.sync()
+    @discardableResult
+    func restorePurchases() async -> RestoreResult {
+        do {
+            try await AppStore.sync()
+        } catch {
+            // Still check: entitlements already on the device may be valid.
+            await checkSubscriptionStatus()
+            return subscriptionStatus == .subscribed ? .restored : .failed
+        }
         await checkSubscriptionStatus()
+        return subscriptionStatus == .subscribed ? .restored : .nothingToRestore
     }
     
     private func listenForTransactions() -> Task<Void, Error> {
@@ -139,11 +159,7 @@ class SubscriptionManager: ObservableObject {
         subscriptionStatus == .subscribed
     }
     
-    var canUsePIN: Bool {
-        subscriptionStatus == .subscribed
-    }
-    
-    var canUseFaceID: Bool {
+    var isPro: Bool {
         subscriptionStatus == .subscribed
     }
     

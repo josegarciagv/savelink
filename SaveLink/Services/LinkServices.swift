@@ -8,6 +8,7 @@ import SwiftData
 import LinkPresentation
 import CoreImage.CIFilterBuiltins
 import Observation
+import UniformTypeIdentifiers
 
 // MARK: - Opening links
 
@@ -21,12 +22,11 @@ final class LinkOpener {
     private init() {}
 
     /// Opens a link by id (from a notification, widget, Spotlight or Siri).
-    /// Links in PIN-protected folders open the app only, never the page.
     func open(linkID: UUID) {
         let context = AppModelContainer.shared.mainContext
         var descriptor = FetchDescriptor<Link>(predicate: #Predicate { $0.id == linkID && $0.deletedAt == nil })
         descriptor.fetchLimit = 1
-        guard let link = try? context.fetch(descriptor).first, !link.isLocked else { return }
+        guard let link = try? context.fetch(descriptor).first else { return }
         open(link)
     }
 
@@ -87,8 +87,7 @@ enum QRCodeGenerator {
 
 enum LinkExporter {
     /// Writes a Netscape bookmarks file (importable by Safari, Chrome, Firefox).
-    /// Links in PIN-protected folders are skipped.
-    static func bookmarksFile(folders: [Folder]) -> URL? {
+    static func bookmarksFile(folders: [Folder], fileName: String = "SaveLink Bookmarks") -> URL? {
         func escape(_ s: String) -> String {
             s.replacingOccurrences(of: "&", with: "&amp;")
                 .replacingOccurrences(of: "<", with: "&lt;")
@@ -104,7 +103,7 @@ enum LinkExporter {
         <DL><p>
 
         """
-        for folder in folders where !folder.isLocked {
+        for folder in folders {
             html += "    <DT><H3>\(escape(folder.name))</H3>\n    <DL><p>\n"
             for link in folder.activeLinks.sorted(by: { $0.createdAt < $1.createdAt }) {
                 let added = Int(link.createdAt.timeIntervalSince1970)
@@ -117,13 +116,29 @@ enum LinkExporter {
         }
         html += "</DL><p>\n"
 
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("SaveLink Bookmarks.html")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(fileName).html")
         do {
             try html.write(to: url, atomically: true, encoding: .utf8)
             return url
         } catch {
             print("Failed to write export: \(error)")
             return nil
+        }
+    }
+}
+
+/// A folder shared as a bookmarks file. The file is only written when the user shares it.
+/// Anyone can open it in a browser or import it into SaveLinks.
+struct FolderBookmarks: Transferable {
+    let folder: Folder
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(exportedContentType: .html) { item in
+            let url = await MainActor.run {
+                LinkExporter.bookmarksFile(folders: [item.folder], fileName: item.folder.name)
+            }
+            guard let url else { throw CocoaError(.fileWriteUnknown) }
+            return SentTransferredFile(url)
         }
     }
 }

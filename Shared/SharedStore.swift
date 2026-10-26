@@ -18,6 +18,7 @@ enum SharedStore {
     private static let isProKey = "is_pro"
     private static let linkCountKey = "link_count"
     private static let widgetKey = "widget_snapshot"
+    private static let savedURLsKey = "saved_urls"
 
     private static var defaults: UserDefaults? {
         UserDefaults(suiteName: appGroupID)
@@ -28,10 +29,9 @@ enum SharedStore {
         let name: String
         let icon: String
         let color: String
-        let isLocked: Bool
     }
 
-    /// What the home screen widgets show. Never includes links from PIN-protected folders.
+    /// What the home screen widgets show.
     struct WidgetLink: Codable, Identifiable, Hashable {
         let id: UUID
         let name: String
@@ -61,6 +61,17 @@ enum SharedStore {
         guard let defaults else { return }
         defaults.set(try? JSONEncoder().encode(folders), forKey: foldersKey)
         defaults.set(linkCount, forKey: linkCountKey)
+    }
+
+    /// Lower-cased URLs of saved links, so extensions can spot duplicates.
+    static func publish(savedURLs: [String]) {
+        defaults?.set(savedURLs.map { $0.lowercased() }, forKey: savedURLsKey)
+    }
+
+    static func isAlreadySaved(_ url: String) -> Bool {
+        let saved = Set(defaults?.stringArray(forKey: savedURLsKey) ?? [])
+        let lower = url.lowercased()
+        return saved.contains(lower) || saved.contains(lower.hasSuffix("/") ? String(lower.dropLast()) : lower + "/")
     }
 
     static func publish(widget snapshot: WidgetSnapshot) {
@@ -118,5 +129,32 @@ enum SharedStore {
         guard let data = try? JSONEncoder().encode(links) else { return false }
         defaults.set(data, forKey: pendingKey)
         return true
+    }
+}
+
+// MARK: - Actions from widgets
+
+extension SharedStore {
+    private static let readMarksKey = "pending_read_marks"
+
+    /// Called by the widget: hides the link from Read Later right away and
+    /// queues the change for the app, which owns the database.
+    static func markRead(_ id: UUID) {
+        guard let defaults = UserDefaults(suiteName: appGroupID) else { return }
+        var snapshot = widgetSnapshot
+        snapshot.readLater.removeAll { $0.id == id }
+        snapshot.readLaterCount = max(0, snapshot.readLaterCount - 1)
+        publish(widget: snapshot)
+        var marks = defaults.stringArray(forKey: readMarksKey) ?? []
+        marks.append(id.uuidString)
+        defaults.set(marks, forKey: readMarksKey)
+    }
+
+    /// Returns and clears the links marked as read from widgets.
+    static func takeReadMarks() -> [UUID] {
+        guard let defaults = UserDefaults(suiteName: appGroupID) else { return [] }
+        let marks = defaults.stringArray(forKey: readMarksKey) ?? []
+        defaults.removeObject(forKey: readMarksKey)
+        return marks.compactMap(UUID.init(uuidString:))
     }
 }

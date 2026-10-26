@@ -15,10 +15,10 @@ enum LinkFilter: Hashable {
 
     var title: String {
         switch self {
-        case .favorites: return "Favorites"
-        case .readLater: return "Read Later"
-        case .tag(let tag): return "#\(tag)"
-        case .broken: return "Broken Links"
+        case .favorites: return String(localized: "Favorites")
+        case .readLater: return String(localized: "Read Later")
+        case .tag(let tag): return String(localized: "#\(tag)")
+        case .broken: return String(localized: "Broken Links")
         }
     }
 
@@ -58,9 +58,8 @@ struct LinkListView: View {
     @State private var isChecking = false
     @State private var checked = 0
 
-    /// Links from PIN-protected folders are only shown inside their folder.
     private var links: [Link] {
-        allLinks.filter { !$0.isLocked && filter.matches($0) }
+        allLinks.filter { filter.matches($0) }
     }
 
     var body: some View {
@@ -146,25 +145,25 @@ struct LinkListView: View {
 
     private var emptyTitle: String {
         switch filter {
-        case .favorites: return "No Favorites"
-        case .readLater: return "All Caught Up"
-        case .tag: return "No Links"
-        case .broken: return "No Broken Links"
+        case .favorites: return String(localized: "No Favorites")
+        case .readLater: return String(localized: "All Caught Up")
+        case .tag: return String(localized: "No Links")
+        case .broken: return String(localized: "No Broken Links")
         }
     }
 
     private var emptyMessage: String {
         switch filter {
-        case .favorites: return "Tap the star on any link to add it here."
-        case .readLater: return "Save links for later and they'll wait for you here."
-        case .tag: return "No links use this tag yet."
-        case .broken: return "Every link you checked still works."
+        case .favorites: return String(localized: "Tap the star on any link to add it here.")
+        case .readLater: return String(localized: "Save links for later and they'll wait for you here.")
+        case .tag: return String(localized: "No links use this tag yet.")
+        case .broken: return String(localized: "Every link you checked still works.")
         }
     }
 
     private func recheck() async {
         isChecking = true
-        _ = await BrokenLinkChecker.check(allLinks.filter { !$0.isLocked }) { _ in }
+        _ = await BrokenLinkChecker.check(allLinks) { _ in }
         isChecking = false
     }
 }
@@ -246,30 +245,15 @@ struct TrashView: View {
     private func trashRow(_ link: Link) -> some View {
         let daysLeft = max(0, 30 - Calendar.current.dateComponents([.day], from: link.deletedAt ?? .now, to: .now).day!)
         HStack(spacing: 14) {
-            if link.isLocked {
-                // Don't reveal links from PIN-protected folders.
-                Image(systemName: "lock.fill")
+            FaviconView(urlString: link.url, color: .folder(link.folder?.color), size: 44)
+                .saturation(0)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(link.name)
+                    .font(.body.weight(.semibold))
+                    .lineLimit(1)
+                Text(link.domain)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
-                    .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("Protected link")
-                        .font(.body.weight(.semibold))
-                    Text("From \(link.folder?.name ?? "a protected folder")")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            } else {
-                FaviconView(urlString: link.url, color: .folder(link.folder?.color), size: 44)
-                    .saturation(0)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(link.name)
-                        .font(.body.weight(.semibold))
-                        .lineLimit(1)
-                    Text(link.domain)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
             }
             Spacer()
             Text(daysLeft == 1 ? "1 day" : "\(daysLeft) days")

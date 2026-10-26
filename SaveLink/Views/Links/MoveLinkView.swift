@@ -23,11 +23,6 @@ struct MoveLinkView: View {
                             .frame(width: 28)
                         Text(folder.name)
                             .foregroundStyle(.primary)
-                        if folder.isLocked {
-                            Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
                         Spacer()
                         if link.folder?.id == folder.id {
                             Image(systemName: "checkmark")
@@ -44,6 +39,8 @@ struct MoveLinkView: View {
                 }
             }
         }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
     }
 
     private func move(to folder: Folder) {

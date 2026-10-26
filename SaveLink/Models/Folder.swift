@@ -8,27 +8,33 @@
 import Foundation
 import SwiftData
 
+// Every stored property has a default value and the relationship is optional:
+// CloudKit (iCloud sync) requires both.
 @Model
 final class Folder {
-    var id: UUID
-    var name: String
-    var pin: String
-    var color: String // Hex color string
-    var createdAt: Date
+    var id: UUID = UUID()
+    var name: String = ""
+    var color: String = "007AFF" // Hex color string
+    var createdAt: Date = Date()
     var updatedAt: Date?
     var icon: String = "folder.fill" // SF Symbol name
     var isPinned: Bool = false
-    @Relationship(deleteRule: .cascade) var links: [Link]
+    @Relationship(deleteRule: .cascade, originalName: "links", inverse: \Link.folder)
+    var storedLinks: [Link]? = []
+    
+    var links: [Link] {
+        get { storedLinks ?? [] }
+        set { storedLinks = newValue }
+    }
 
-    init(name: String, pin: String, color: String, icon: String = "folder.fill") {
+    init(name: String, color: String, icon: String = "folder.fill") {
         self.id = UUID()
         self.name = name
-        self.pin = pin
         self.color = color
         self.icon = icon
         self.createdAt = Date()
         self.updatedAt = Date()
-        self.links = []
+        self.storedLinks = []
     }
 
     /// Links that aren't in Recently Deleted.
@@ -36,10 +42,6 @@ final class Folder {
         links.filter { $0.deletedAt == nil }
     }
     
-    var isLocked: Bool {
-        !pin.isEmpty
-    }
-
     // Computed property to get last updated date (from links or folder update)
     var lastUpdatedDate: Date {
         let folderUpdateDate = updatedAt ?? createdAt

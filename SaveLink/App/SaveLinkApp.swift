@@ -11,6 +11,11 @@ import UserNotifications
 
 /// One container for the app and its App Intents (Siri, Shortcuts, Spotlight).
 enum AppModelContainer {
+    static let cloudKitContainerID = "iCloud.gvwebsite.savelinks"
+    
+    /// True when the store was opened with iCloud sync (false if CloudKit was unavailable).
+    private(set) static var isCloudSyncActive = false
+    
     static let shared: ModelContainer = {
         let schema = Schema([
             Folder.self,
@@ -31,11 +36,13 @@ enum AppModelContainer {
             schema: schema,
             isStoredInMemoryOnly: false,
             groupContainer: .none,
-            cloudKitDatabase: .automatic
+            cloudKitDatabase: .private(cloudKitContainerID)
         )
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            isCloudSyncActive = true
+            return container
         } catch {
             // If CloudKit fails, try without CloudKit as fallback
             print("⚠️ CloudKit initialization failed, trying local storage: \(error)")
@@ -79,6 +86,7 @@ struct SaveLinkApp: App {
                     // Restore data from UserDefaults backup on app launch
                     await restoreDataIfNeeded()
                     sharedModelContainer.mainContext.purgeOldTrash()
+                    sharedModelContainer.mainContext.removeDuplicates()
                 }
         }
         .modelContainer(sharedModelContainer)
@@ -111,6 +119,7 @@ struct SaveLinkApp: App {
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        WatchSync.shared.activate()
         return true
     }
     

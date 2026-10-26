@@ -1,0 +1,12 @@
+{
+    "extension_name": { "message": "SaveLinks" },
+    "extension_description": { "message": "Save the current page to SaveLinks with one tap." },
+    "saving": { "message": "Saving…" },
+    "saved": { "message": "Saved to SaveLinks" },
+    "saved_in": { "message": "Added to $FOLDER$", "placeholders": { "folder": { "content": "$1" } } },
+    "already_saved": { "message": "Already in SaveLinks" },
+    "limit": { "message": "Free limit reached. Open SaveLinks to upgrade." },
+    "no_page": { "message": "There's no web page to save here." },
+    "error": { "message": "Couldn't save this page." },
+    "opens_next": { "message": "It appears the next time you open the app." }
+}

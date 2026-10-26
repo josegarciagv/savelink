@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var opener = LinkOpener.shared
     @State private var showAddFolder = false
     @State private var showSettings = false
+    @State private var showSubscription = false
     @State private var addLinkRequest: AddLinkRequest?
     @State private var folderToEdit: Folder?
     @State private var folderToDelete: Folder?
@@ -54,10 +55,10 @@ struct HomeView: View {
 
         var displayName: String {
             switch self {
-            case .newToOld: return "New to Old"
-            case .oldToNew: return "Old to New"
-            case .lastUpdated: return "Last Updated"
-            case .name: return "Name (A–Z)"
+            case .newToOld: return String(localized: "New to Old")
+            case .oldToNew: return String(localized: "Old to New")
+            case .lastUpdated: return String(localized: "Last Updated")
+            case .name: return String(localized: "Name (A–Z)")
             }
         }
     }
@@ -79,30 +80,25 @@ struct HomeView: View {
         return sorted.filter(\.isPinned) + sorted.filter { !$0.isPinned }
     }
 
-    /// Links that are safe to show outside their folder (not PIN-protected).
-    var visibleLinks: [Link] {
-        allLinks.filter { !$0.isLocked }
-    }
-
     var favoriteLinks: [Link] {
-        visibleLinks.filter(\.isFavorite).sorted { $0.lastUpdatedDate > $1.lastUpdatedDate }
+        allLinks.filter(\.isFavorite).sorted { $0.lastUpdatedDate > $1.lastUpdatedDate }
     }
 
     var recentLinks: [Link] {
-        Array(visibleLinks.sorted { $0.createdAt > $1.createdAt }.prefix(5))
+        Array(allLinks.sorted { $0.createdAt > $1.createdAt }.prefix(5))
     }
 
     var readLaterLinks: [Link] {
-        visibleLinks.filter(\.isReadLater).sorted { $0.createdAt > $1.createdAt }
+        allLinks.filter(\.isReadLater).sorted { $0.createdAt > $1.createdAt }
     }
 
     var brokenCount: Int {
-        visibleLinks.filter(\.isBroken).count
+        allLinks.filter(\.isBroken).count
     }
 
     /// Tags from visible links, most used first.
     var allTags: [String] {
-        let counts = visibleLinks.flatMap(\.tags).reduce(into: [String: Int]()) { $0[$1, default: 0] += 1 }
+        let counts = allLinks.flatMap(\.tags).reduce(into: [String: Int]()) { $0[$1, default: 0] += 1 }
         return counts.sorted { $0.value == $1.value ? $0.key < $1.key : $0.value > $1.value }.map(\.key)
     }
 
@@ -138,6 +134,9 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+        .sheet(isPresented: $showSubscription) {
+            SubscriptionView()
+        }
         .sheet(item: $addLinkRequest) { request in
             AddLinkView(folder: request.folder, initialURL: request.url)
         }
@@ -147,20 +146,14 @@ struct HomeView: View {
         .sheet(item: $linkToMove) { link in
             MoveLinkView(link: link)
         }
-        .sheet(item: $folderToDelete) { folder in
-            DeleteFolderConfirmationView(
-                folderName: folder.name,
-                folderCount: 1,
-                onConfirm: {
-                    if sidebarSelection == .folder(folder) { sidebarSelection = .home }
-                    modelContext.delete(folder)
-                    modelContext.saveAndBackup()
-                    folderToDelete = nil
-                },
-                onCancel: { folderToDelete = nil }
-            )
-            .presentationDetents([.height(320)])
-            .presentationDragIndicator(.visible)
+        .deleteFolderAlert(
+            isPresented: Binding(get: { folderToDelete != nil }, set: { if !$0 { folderToDelete = nil } }),
+            folder: folderToDelete
+        ) {
+            if let folder = folderToDelete, sidebarSelection == .folder(folder) {
+                sidebarSelection = .home
+            }
+            folderToDelete = nil
         }
         .fullScreenCover(item: $opener.presentedURL) { item in
             SafariView(url: item.url)
@@ -174,6 +167,8 @@ struct HomeView: View {
             if phase == .active {
                 checkClipboard()
                 syncShareExtension()
+                // Catch renewals, expirations and refunds that happened while away.
+                Task { await subscriptionManager.checkSubscriptionStatus() }
             }
         }
         .onChange(of: sidebarSelection) { _, _ in
@@ -265,15 +260,9 @@ struct HomeView: View {
                         Text(folder.name)
                             .lineLimit(1)
                         Spacer()
-                        if folder.isLocked {
-                            Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        } else {
-                            Text("\(folder.activeLinks.count)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
+                        Text("\(folder.activeLinks.count)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
                     .tag(SidebarItem.folder(folder))
                     .contextMenu { folderMenu(folder) }
@@ -346,6 +335,10 @@ struct HomeView: View {
             if let id { LinkOpener.shared.open(linkID: id) }
         case "add":
             addLinkRequest = AddLinkRequest()
+        case "paste":
+            // From the Control Center button: save whatever link is in the clipboard.
+            let pasteboard = UIPasteboard.general
+            addLinkRequest = AddLinkRequest(url: pasteboard.url?.absoluteString ?? pasteboard.string ?? "")
         case "readlater":
             show(.readLater)
         case "favorites":
@@ -489,7 +482,7 @@ struct HomeView: View {
         }
     }
 
-    private func libraryTile<Value: Hashable>(title: String, icon: String, color: Color, count: Int, value: Value) -> some View {
+    private func libraryTile<Value: Hashable>(title: LocalizedStringKey, icon: String, color: Color, count: Int, value: Value) -> some View {
         NavigationLink(value: value) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
@@ -536,19 +529,16 @@ struct HomeView: View {
         } label: {
             Label("Add Link", systemImage: "link.badge.plus")
         }
-        // Protected folders can only be edited or deleted after unlocking them.
-        if !folder.isLocked {
-            Button {
-                folderToEdit = folder
-            } label: {
-                Label("Edit", systemImage: "pencil")
-            }
-            Divider()
-            Button(role: .destructive) {
-                folderToDelete = folder
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
+        Button {
+            folderToEdit = folder
+        } label: {
+            Label("Edit", systemImage: "pencil")
+        }
+        Divider()
+        Button(role: .destructive) {
+            folderToDelete = folder
+        } label: {
+            Label("Delete", systemImage: "trash")
         }
     }
 
@@ -573,12 +563,12 @@ struct HomeView: View {
         .font(.subheadline.weight(.semibold))
     }
 
-    private func section<Content: View>(_ title: String, icon: String, @ViewBuilder content: () -> Content) -> some View {
+    private func section<Content: View>(_ title: LocalizedStringKey, icon: String, @ViewBuilder content: () -> Content) -> some View {
         section(title, icon: icon, trailing: EmptyView(), content: content)
     }
 
     private func section<Content: View, Trailing: View>(
-        _ title: String,
+        _ title: LocalizedStringKey,
         icon: String,
         trailing: Trailing,
         @ViewBuilder content: () -> Content
@@ -625,7 +615,7 @@ struct HomeView: View {
         .shadow(color: Theme.brand.opacity(0.3), radius: 14, y: 8)
     }
 
-    private func statItem(value: Int, label: String, icon: String) -> some View {
+    private func statItem(value: Int, label: LocalizedStringKey, icon: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Image(systemName: icon)
                 .font(.caption.weight(.semibold))
@@ -683,6 +673,7 @@ struct HomeView: View {
 
     /// Imports links saved from Safari and refreshes the folder list the extension shows.
     private func syncShareExtension() {
+        modelContext.applyWidgetReadMarks()
         if modelContext.importPendingLinks() > 0 {
             Haptics.success()
         } else {
@@ -716,7 +707,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     onboardingRow("folder.fill", "Organize", "Group links in colorful folders with icons.")
                     onboardingRow("star.fill", "Favorites", "Keep the links you use most one tap away.")
-                    onboardingRow("lock.fill", "Private", "Protect folders with a PIN or Face ID.")
+                    onboardingRow("book.fill", "Read Later", "Save pages to read offline, with reminders.")
                     onboardingRow("doc.on.clipboard.fill", "Fast", "Save copied links and auto-fill their titles.")
                 }
                 .padding(20)
@@ -745,12 +736,41 @@ struct HomeView: View {
                     .buttonStyle(.bordered)
                     .buttonBorderShape(.roundedRectangle(radius: 14))
                 }
+
+                if !isSubscribed {
+                    Button {
+                        showSubscription = true
+                    } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: "sparkles")
+                                .font(.title3)
+                                .foregroundStyle(.white)
+                                .frame(width: 40, height: 40)
+                                .background(Theme.brand.gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Try PRO Free")
+                                    .font(.headline)
+                                    .foregroundStyle(.primary)
+                                Text("Unlimited links, AI summaries, QR scanner and more")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.tertiary)
+                        }
+                        .padding(14)
+                        .card()
+                    }
+                    .buttonStyle(.plain)
+                }
             }
             .padding(24)
         }
     }
 
-    private func onboardingRow(_ icon: String, _ title: String, _ text: String) -> some View {
+    private func onboardingRow(_ icon: String, _ title: LocalizedStringKey, _ text: LocalizedStringKey) -> some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
                 .font(.headline)
@@ -769,7 +789,7 @@ struct HomeView: View {
     private var searchResults: some View {
         let matchingFolders = folders.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         let tagQuery = TagFormatter.clean(searchText)
-        let matchingLinks = visibleLinks.filter {
+        let matchingLinks = allLinks.filter {
             $0.name.localizedCaseInsensitiveContains(searchText)
                 || $0.url.localizedCaseInsensitiveContains(searchText)
                 || $0.tags.contains { $0.hasPrefix(tagQuery) }
@@ -777,9 +797,12 @@ struct HomeView: View {
                 || ($0.linkDescription?.localizedCaseInsensitiveContains(searchText) ?? false)
         }
         .sorted { $0.createdAt > $1.createdAt }
+        let matchingIDs = Set(matchingLinks.map(\.id))
+        let relatedLinks = SmartSearch.related(to: searchText, in: allLinks)
+            .filter { !matchingIDs.contains($0.id) }
 
         return List {
-            if matchingFolders.isEmpty && matchingLinks.isEmpty {
+            if matchingFolders.isEmpty && matchingLinks.isEmpty && relatedLinks.isEmpty {
                 ContentUnavailableView.search(text: searchText)
                     .listRowBackground(Color.clear)
             }
@@ -800,6 +823,20 @@ struct HomeView: View {
                         }
                         .contextMenu { LinkContextMenu(link: link) { linkToMove = link } }
                     }
+                }
+            }
+            if !relatedLinks.isEmpty {
+                Section {
+                    ForEach(relatedLinks) { link in
+                        NavigationLink(value: link) {
+                            LinkRowView(link: link, showFolder: true)
+                        }
+                        .contextMenu { LinkContextMenu(link: link) { linkToMove = link } }
+                    }
+                } header: {
+                    Label("Related", systemImage: "sparkle.magnifyingglass")
+                } footer: {
+                    Text("Found by meaning, privately on your device. Try “recipes from last week”.")
                 }
             }
         }
@@ -833,16 +870,11 @@ struct FolderCard: View {
                     .frame(width: 44, height: 44)
                     .background(tint.gradient, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
                 Spacer()
-                HStack(spacing: 6) {
-                    if folder.isPinned {
-                        Image(systemName: "pin.fill")
-                    }
-                    if folder.isLocked {
-                        Image(systemName: "lock.fill")
-                    }
+                if folder.isPinned {
+                    Image(systemName: "pin.fill")
+                        .font(.caption)
+                        .foregroundStyle(tint)
                 }
-                .font(.caption)
-                .foregroundStyle(tint)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(folder.name)
@@ -887,11 +919,6 @@ struct FolderRowView: View {
 
             if folder.isPinned {
                 Image(systemName: "pin.fill")
-                    .font(.caption)
-                    .foregroundStyle(tint)
-            }
-            if folder.isLocked {
-                Image(systemName: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(tint)
             }

@@ -1,0 +1,142 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%lld": {
+      "shouldTranslate": false
+    },
+    "%lld to read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld por leer"
+          }
+        }
+      }
+    },
+    "All caught up!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Todo al día!"
+          }
+        }
+      }
+    },
+    "Favorites": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoritos"
+          }
+        }
+      }
+    },
+    "Link ID": {
+      "shouldTranslate": false
+    },
+    "Links waiting for you to read.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enlaces que esperan tu lectura."
+          }
+        }
+      }
+    },
+    "Mark as Read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como leído"
+          }
+        }
+      }
+    },
+    "Opens SaveLinks ready to save the link in your clipboard.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre SaveLinks listo para guardar el enlace de tu portapapeles."
+          }
+        }
+      }
+    },
+    "Read Later": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer después"
+          }
+        }
+      }
+    },
+    "Save Copied Link": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar enlace copiado"
+          }
+        }
+      }
+    },
+    "Save Link": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar enlace"
+          }
+        }
+      }
+    },
+    "Star links in SaveLinks to see them here.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marca enlaces con estrella en SaveLinks para verlos aquí."
+          }
+        }
+      }
+    },
+    "Your favorite links, one tap away.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus enlaces favoritos, a un toque."
+          }
+        }
+      }
+    },
+    "link to read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "enlace por leer"
+          }
+        }
+      }
+    },
+    "links to read": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "enlaces por leer"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
